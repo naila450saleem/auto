@@ -191,6 +191,29 @@ body {
   }
 }
 
+.next-step-buttons {
+    text-align: center; /* buttons center me */
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #b6f87c; /* blue color */
+    color: #000;
+    border: none;
+    padding: 14px 30px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #87c155;
+}
+
+
 
 /* Dropdown Styles */
 .dropdown {
@@ -397,31 +420,185 @@ body {
 }
 
 /* Confirmation Page Styles */
-.confirmation-page {
-    display: none;
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
 .confirmation-header {
     text-align: center;
-    margin-bottom: 30px;
+}
+
+.confirmation-header h1 {
+    font-size: 2.5rem; /* large heading */
+    font-weight: 700;  /* bold */
+    color: #1f2937;    /* dark gray */
+    margin-bottom: 10px;
+    line-height: 1.2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 20px; 
 }
 
 .confirmation-header h2 {
-    color: #09265e;
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: 1.5rem; /* slightly smaller */
+    font-weight: 500;
+    color: #4b5563;    /* medium gray */
+    margin-top: 0;
+    line-height: 1.4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.confirmation-header p {
-    color: #666;
-    font-size: 16px;
+.confirmation-container {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  margin-top: 5%;
+  margin-left: 5%;
 }
+
+.confirmation-left {
+  flex: 1;
+}
+
+.confirmation-right {
+  flex: 0 0 260px;
+  background: #f7f8fc;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.summary-box h3 {
+  color: #09265e;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.summary-item {
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #333;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.checkbox-item input {
+  margin-top: 4px;
+}
+
+.checkbox-item span {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.checkbox-item a {
+  color: #09265e;
+  text-decoration: underline;
+}
+
+.terms-note {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #555;
+}
+
+.terms-note a {
+  color: #09265e;
+  text-decoration: underline;
+}
+
+#confirmation-page {
+  display: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .confirmation-container {
+        flex-direction: column;
+        margin-left: 3%;
+        margin-right: 3%;
+        gap: 20px;
+    }
+
+    .confirmation-left,
+    .confirmation-right {
+        flex: 1 1 100%;
+    }
+
+    .confirmation-right {
+        padding: 15px;
+    }
+
+    .summary-box h3 {
+        font-size: 18px;
+    }
+
+    .summary-item {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .confirmation-header h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+
+    .confirmation-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .confirmation-container {
+        margin-top: 3%;
+        gap: 15px;
+    }
+
+    .confirmation-right {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .confirmation-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .confirmation-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .confirmation-right {
+        padding: 10px;
+        flex: 1 1 100%;
+    }
+
+    .summary-box h3 {
+        font-size: 16px;
+    }
+
+    .summary-item {
+        font-size: 13px;
+    }
+
+    .checkbox-group {
+        gap: 10px;
+    }
+
+    .terms-note {
+        font-size: 12px;
+    }
+}
+
+
+
+
 
 .form-row {
     display: flex;
@@ -446,6 +623,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 16px;
+    margin-top: 10px;
 }
 
 .radio-group {
@@ -886,37 +1064,81 @@ body {
         </div>
     </div>
 
+   
     <!-- Confirmation Page -->
-    <div id="confirmation-page" class="confirmation-page">
-        <div class="confirmation-header">
-            <h2>Get Your Lightning Fast Quote!</h2>
+<div id="confirmation-page" class="confirmation-page">
+  <div class="confirmation-container">
+    <!-- LEFT SIDE -->
+    <div class="confirmation-left">
+      <div class="confirmation-header">
+       <h1> Let’s get you a quote that works for you.</h1>
+        <h2>Get Your Lightning Fast Quote!</h2>
+      </div>
+
+      <form id="quote-details-form">
+        <div class="form-field">
+          <!-- <label for="phone">Phone Number</label> -->
+          <input type="tel" id="phone" name="phone" placeholder="Phone" required>
         </div>
-        
-        <form id="quote-details-form">
-            <div class="form-row">
-  <div class="form-field">
-    <label for="phone">Phone Number</label>
-    <input type="tel" id="phone" name="phone" placeholder="+1 (___) ___-____" required>
+
+        <div class="form-field">
+          <!-- <label for="email">Email Address</label> -->
+          <input type="email" id="email" name="email" placeholder="Email" required>
+        </div>
+
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" required>
+            <span>
+              By checking this box, you expressly authorize Nexus AT, LLC to call you, either manually or through an automated system. Your agreement to receive calls from Nexus AT, LLC is not a condition of this transaction. You are able to opt out of receiving calls at any time by emailing help@nexusautotransport.com.
+            </span>
+          </label>
+
+          <label class="checkbox-item">
+            <input type="checkbox" required>
+            <span>
+              By checking this box, I agree to receive SMS messages about Promotions or offers from Nexus Auto Transport at the number provided. Your agreement to receive SMS messaging from Nexus AT, LLC is not a condition of this transaction. You are able to opt-out of such messaging at any time by replying “STOP.” Reply “HELP” for assistance. Message frequency may vary. Message and data rates may apply. SMS consent and phone numbers will not be shared with third parties or affiliates for marketing purposes. For further information, please visit our <a href="#">Privacy Policy</a> or <a href="#">Terms & Conditions</a>.
+            </span>
+          </label>
+        </div>
+
+        <div class="next-step-buttons">
+    <input type="submit" id="route-confirm" class="btn-primary" value="Continue">
+</div>
+
+
+        <p class="terms-note">
+          By using our website, you agree to be bound by our
+          <a href="#">Terms and Conditions</a> and
+          <a href="#">Privacy Policy</a>.
+        </p>
+      </form>
+    </div>
+
+    <!-- RIGHT SIDE (SUMMARY) -->
+    <div class="confirmation-right">
+      <div class="summary-box">
+        <h3>Summary of the Quote</h3>
+        <div class="summary-item">
+          <strong>Vehicle:</strong> <span id="summary-vehicle">sedan midsize</span>
+        </div>
+        <div class="summary-item">
+          <strong>Route:</strong><br>
+          From: <span id="summary-pickup">Seattle, WA</span><br>
+          To: <span id="summary-dropoff">Dallas, TX</span>
+        </div>
+        <div class="summary-item">
+          <strong>Date:</strong> <span id="summary-date">Within 7 days</span>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="form-field">
-    <label for="email">Email Address</label>
-    <input type="email" id="email" name="email" placeholder="your@email.com" required>
-  </div>
 </div>
 
-<!-- Optional area to show entered email -->
-<div id="email-display" style="display:none; margin-top:10px; color:#002b5c; font-weight:600;">
-  You entered: <span id="email-value"></span>
-</div>
-
-<!-- Submit button -->
-<div class="continue-buttons">
-  <input type="submit" id="route-confirm" class="btn" value="Submit">
-</div>
+    
 
             
-            <div class="form-row">
+            <!-- <div class="form-row"> -->
                 <!-- <div class="form-field">
                     <label for="vehicle-type">Vehicle</label>
                     <select id="vehicle-type" name="vehicle-type" required>
@@ -934,7 +1156,7 @@ body {
                         Years will be populated by JavaScript -->
                     <!-- </select> -->
                 <!-- </div> --> 
-            </div>
+            <!-- </div> -->
             
             <!-- <div class="form-row">
                 <div class="form-field">
@@ -1016,9 +1238,7 @@ body {
                 </div>
             </div> -->
             
-            <button type="button" id="back-btn" class="btn back-btn">Back to Calculator</button>
-        </form>
-    </div>
+        
 
     <script>
 // ==========================
@@ -1159,11 +1379,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   });
 
-  // Back button
-  document.getElementById('back-btn').addEventListener('click', () => {
+ // Back button (safe version)
+const backBtn = document.getElementById('back-btn');
+if (backBtn) {
+  backBtn.addEventListener('click', () => {
     document.getElementById('confirmation-page').style.display = 'none';
     document.querySelector('.calculator').style.display = 'block';
   });
+}
+
 
   // ===== FIXED DROPDOWN FUNCTIONALITY =====
   // Dropdown functionality for pickup date
@@ -1290,6 +1514,77 @@ document.addEventListener('DOMContentLoaded', function() {
       btnContainer.classList.remove('show-dealer');
     }
   });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const summaryVehicle = document.getElementById('summary-vehicle');
+    const summaryPickup = document.getElementById('summary-pickup');
+    const summaryDropoff = document.getElementById('summary-dropoff');
+    const summaryDate = document.getElementById('summary-date');
+
+    const pickupInput = document.getElementById('pickup');
+    const deliveryInput = document.getElementById('delivery');
+    const vehicleMake = document.getElementById('vehicle-make');
+    const vehicleModel = document.getElementById('vehicle-model');
+    const vehicleYear = document.getElementById('vehicle-year');
+
+    // Pickup Date dropdown
+    const pickupDropdownItems = document.querySelectorAll('.time .dropdown-item');
+
+    // ----------------- PICKUP & DELIVERY -----------------
+    function setSummaryFromAutocomplete(input, summaryEl) {
+        // Listen for Google Places or autocomplete selection
+        input.addEventListener('place_changed', () => {
+            const place = input.getPlace ? input.getPlace() : null;
+            if(place && place.formatted_address) {
+                summaryEl.textContent = place.formatted_address;
+            } else if(input.value) {
+                summaryEl.textContent = input.value; // fallback
+            }
+        });
+
+        // If autocomplete not firing, fallback to blur
+        input.addEventListener('blur', () => {
+            if(input.value) summaryEl.textContent = input.value;
+        });
+    }
+
+    // If you are using custom list dropdown
+    function setSummaryFromList(input, summaryEl, listId) {
+        const listItems = document.getElementById(listId).querySelectorAll('.list-group-item');
+        listItems.forEach(item => {
+            item.addEventListener('click', () => {
+                summaryEl.textContent = item.textContent;
+            });
+        });
+    }
+
+    setSummaryFromList(pickupInput, summaryPickup, 'pickup-list');
+    setSummaryFromList(deliveryInput, summaryDropoff, 'delivery-list');
+
+    // ----------------- VEHICLE SUMMARY -----------------
+    function updateVehicleSummary() {
+        const make = vehicleMake.value;
+        const model = vehicleModel.value;
+        const year = vehicleYear.value;
+        summaryVehicle.textContent = 
+            `${year ? year + ' ' : ''}${make ? make.charAt(0).toUpperCase() + make.slice(1) : ''}${model ? ' ' + model : ''}`.trim() || 'Select vehicle';
+    }
+
+    vehicleMake.addEventListener('change', updateVehicleSummary);
+    vehicleModel.addEventListener('input', updateVehicleSummary);
+    vehicleYear.addEventListener('change', updateVehicleSummary);
+
+    // ----------------- PICKUP DATE -----------------
+    pickupDropdownItems.forEach(item => {
+        item.addEventListener('click', () => {
+            summaryDate.textContent = item.textContent;
+            document.querySelector('.time input').value = item.textContent;
+        });
+    });
+
 });
 
 
