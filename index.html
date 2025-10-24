@@ -127,25 +127,46 @@ body {
 }
 
 /* Continue Button */
+/* Green area background */
 .continue-buttons {
-    margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b6f87c;
+  padding: 15px 0;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .btn {
-    background-color: #0066cc;
-    color: white;
-    border: none;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
+  background: transparent;
+  border: none;
+  color: #002b5c;
+  font-weight: 600;
+  padding: 14px 30px;
+  width: 50%;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
 }
 
-.btn:hover {
-    background-color: #0052a3;
+.btn + .btn {
+  border-left: 2px solid #a1ea6d;
 }
+
+.hidden {
+  display: none !important;
+}
+
+.continue-buttons.show-dealer {
+  justify-content: space-between;
+}
+
+
+.continue-buttons.show-dealer .btn {
+  width: 100%;
+}
+
 
 /* Dropdown Styles */
 .dropdown {
@@ -379,31 +400,31 @@ body {
 }
 
 .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
 
-        .form-field {
-            flex: 1;
-        }
+.form-field {
+    flex: 1;
+}
 
-        .form-field label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-        }
+.form-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
 
-        .form-field input, .form-field select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-        }
+.form-field input, .form-field select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
 
-       .radio-group {
+.radio-group {
     display: inline-flex;
     margin-top: 5px;
     border: 1px solid #ddd;
@@ -419,47 +440,47 @@ body {
     display: none;
 }
 
-        .radio-option label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 20px;
-            border: 1px solid #ddd;
-            border-radius: none;
-            background-color: #fff;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            text-align: center;
-            font-weight: normal;
-            margin-bottom: 0;
-        }
+.radio-option label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: none;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+    font-weight: normal;
+    margin-bottom: 0;
+}
 
-        .radio-option input:checked + label {
-            border-color: #ddd;
-            background-color: #a9475b;
-            color: #fff;
-            font-weight: bold;
-        }
+.radio-option input:checked + label {
+    border-color: #ddd;
+    background-color: #a9475b;
+    color: #fff;
+    font-weight: bold;
+}
 
-        .radio-option label:hover {
-            border-color: #ddd;
-        }
+.radio-option label:hover {
+    border-color: #ddd;
+}
 
-        .promise-box {
-            background-color: #f8f9fa;
-            border-left: 4px solid #0066cc;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
+.promise-box {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0066cc;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+}
 
-        .promise-box h3 {
-            color: #09265e;
-            margin-bottom: 10px;
-        }
+.promise-box h3 {
+    color: #09265e;
+    margin-bottom: 10px;
+}
 
-        /* Responsive: stack buttons on small screens */
+/* Responsive: stack buttons on small screens */
 @media (max-width: 600px) {
     .radio-group {
         flex-direction: column;
@@ -601,6 +622,22 @@ body {
                 </div>
             </div>
 
+            <div class="form-row">
+    <div class="form-field">
+        <label for="vehicle-year">Year</label>
+        <select id="vehicle-year" name="vehicle-year" required>
+            <option value="">Select Year</option>
+            <!-- Years will be populated by JavaScript -->
+        </select>
+    </div>
+
+    <div class="form-field">
+        <label for="shipping-date">Shipping Date:</label>
+        <input type="date" id="shipping-date" name="shipping-date" required>
+    </div>
+</div>
+
+
              <div class="form-row">
         <div class="form-field">
             <label>Running:</label>
@@ -681,20 +718,26 @@ body {
                             </div>
                         </div> -->
                         
-                        <a class="pl-2 modal-toggle w-100 text-add-car text-right">+ Add More Vehicles</a>
+                       <a id="addMoreVehicles" class="pl-2 modal-toggle w-100 text-add-car text-right">
+  + Add More Vehicles
+</a>
+
                         
-                        <div class="dealer-wrapper">
-                            <input class="is-dealer" type="checkbox" id="isDealer" name="is-dealer" value="1">
-                            <label class="is-dealer-check" for="isDealer">Are you an automotive dealer?</label>
-                        </div>
-                        
-                        <div class="continue-buttons">
-                            <input type="submit" id="route-confirm" class="btn" value="Get My Quote">
-                        </div>
-                        
-                        <div class="success-message" id="success-message">
-                            Your quote request has been submitted successfully!
-                        </div>
+                     <div class="dealer-wrapper">
+  <input class="is-dealer" type="checkbox" id="isDealer" name="is-dealer" value="1">
+  <label class="is-dealer-check" for="isDealer">Are you an automotive dealer?</label>
+</div>
+
+<div class="continue-buttons" id="buttonContainer">
+  <input type="submit" id="route-confirm" class="btn" value="Get My Quote">
+  <input type="button" id="dealer-btn" class="btn dealer-btn hidden" value="Continue in Dealership Portal">
+</div>
+
+<div class="success-message" id="success-message">
+  Your quote request has been submitted successfully!
+</div>
+
+
                     </form>
                 </div>
             </div>
@@ -709,18 +752,30 @@ body {
         
         <form id="quote-details-form">
             <div class="form-row">
-                <div class="form-field">
-                    <label for="pickup-zip">Pickup</label>
-                    <input type="text" id="pickup-zip" name="pickup-zip" placeholder="City, State" required>
-                </div>
-                <div class="form-field">
-                    <label for="dropoff-zip">Drop-off</label>
-                    <input type="text" id="dropoff-zip" name="dropoff-zip" placeholder="City, State" required>
-                </div>
-            </div>
+  <div class="form-field">
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" name="phone" placeholder="+1 (___) ___-____" required>
+  </div>
+
+  <div class="form-field">
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" placeholder="your@email.com" required>
+  </div>
+</div>
+
+<!-- Optional area to show entered email -->
+<div id="email-display" style="display:none; margin-top:10px; color:#002b5c; font-weight:600;">
+  You entered: <span id="email-value"></span>
+</div>
+
+<!-- Submit button -->
+<div class="continue-buttons">
+  <input type="submit" id="route-confirm" class="btn" value="Submit">
+</div>
+
             
             <div class="form-row">
-                <div class="form-field">
+                <!-- <div class="form-field">
                     <label for="vehicle-type">Vehicle</label>
                     <select id="vehicle-type" name="vehicle-type" required>
                         <option value="">Select Vehicle Type</option>
@@ -729,14 +784,14 @@ body {
                         <option value="truck">Truck</option>
                         <option value="van">Van</option>
                     </select>
-                </div>
-                <div class="form-field">
+                </div> -->
+                <!-- <div class="form-field">
                     <label for="vehicle-year">Year</label>
                     <select id="vehicle-year" name="vehicle-year" required>
                         <option value="">Select Year</option>
-                        <!-- Years will be populated by JavaScript -->
-                    </select>
-                </div>
+                        Years will be populated by JavaScript -->
+                    <!-- </select> -->
+                <!-- </div> --> 
             </div>
             
             <!-- <div class="form-row">
@@ -756,12 +811,12 @@ body {
                 </div>
             </div> -->
             
-            <div class="form-row">
+            <!-- <div class="form-row">
                 <div class="form-field">
                     <label for="shipping-date">Shipping Date:</label>
                     <input type="date" id="shipping-date" name="shipping-date" required>
                 </div>
-            </div>
+            </div> -->
             
             <!-- <div class="form-row">
                 <div class="form-field">
@@ -793,21 +848,21 @@ body {
                 </div>
             </div> -->
             
-            <div class="form-row">
+            <!-- <div class="form-row">
                 <div class="form-field">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-            </div>
+            </div> -->
             
-            <div class="promise-box">
+            <!-- <div class="promise-box">
                 <h3>The Patriot Promise</h3>
                 <p>We will send one quote per submission. We will not endlessly bombard your inbox which unfortunately is all too often the case in this industry. We're just like you, we're not fans of spam! Thank you for considering us.</p>
-            </div>
+            </div> -->
             
-            <button type="submit" class="btn">Request Quote</button>
+            <!-- <button type="submit" class="btn">Request Quote</button> -->
             
-            <div class="optional-section">
+            <!-- <div class="optional-section">
                 <h3>Add Name and Number (optional)</h3>
                 <div class="form-row">
                     <div class="form-field">
@@ -817,316 +872,267 @@ body {
                         <input type="tel" id="optional-phone" name="optional-phone" placeholder="Phone Number">
                     </div>
                 </div>
-            </div>
+            </div> -->
             
             <button type="button" id="back-btn" class="btn back-btn">Back to Calculator</button>
         </form>
     </div>
 
     <script>
-        // Comprehensive list of US cities with states and ZIP codes
-        const usCities = [
-            { city: "New York", state: "NY", zip: "10001" },
-            { city: "Los Angeles", state: "CA", zip: "90001" },
-            { city: "Chicago", state: "IL", zip: "60601" },
-            { city: "Houston", state: "TX", zip: "77001" },
-            { city: "Phoenix", state: "AZ", zip: "85001" },
-            { city: "Philadelphia", state: "PA", zip: "19101" },
-            { city: "San Antonio", state: "TX", zip: "78201" },
-            { city: "San Diego", state: "CA", zip: "92101" },
-            { city: "Dallas", state: "TX", zip: "75201" },
-            { city: "San Jose", state: "CA", zip: "95101" },
-            { city: "Austin", state: "TX", zip: "73301" },
-            { city: "Jacksonville", state: "FL", zip: "32099" },
-            { city: "Fort Worth", state: "TX", zip: "76101" },
-            { city: "Columbus", state: "OH", zip: "43201" },
-            { city: "Charlotte", state: "NC", zip: "28201" },
-            { city: "San Francisco", state: "CA", zip: "94101" },
-            { city: "Indianapolis", state: "IN", zip: "46201" },
-            { city: "Seattle", state: "WA", zip: "98101" },
-            { city: "Denver", state: "CO", zip: "80201" },
-            { city: "Washington", state: "DC", zip: "20001" },
-            { city: "Boston", state: "MA", zip: "02101" },
-            { city: "El Paso", state: "TX", zip: "79901" },
-            { city: "Nashville", state: "TN", zip: "37201" },
-            { city: "Detroit", state: "MI", zip: "48201" },
-            { city: "Oklahoma City", state: "OK", zip: "73101" },
-            { city: "Portland", state: "OR", zip: "97201" },
-            { city: "Las Vegas", state: "NV", zip: "89101" },
-            { city: "Memphis", state: "TN", zip: "37501" },
-            { city: "Louisville", state: "KY", zip: "40201" },
-            { city: "Baltimore", state: "MD", zip: "21201" },
-            { city: "Miami", state: "FL", zip: "33101" },
-            { city: "Atlanta", state: "GA", zip: "30301" },
-            { city: "Kansas City", state: "MO", zip: "64101" },
-            { city: "Albuquerque", state: "NM", zip: "87101" },
-            { city: "Tucson", state: "AZ", zip: "85701" },
-            { city: "Fresno", state: "CA", zip: "93701" },
-            { city: "Sacramento", state: "CA", zip: "95814" },
-            { city: "Mesa", state: "AZ", zip: "85201" },
-            { city: "Kansas City", state: "KS", zip: "66101" },
-            { city: "Colorado Springs", state: "CO", zip: "80901" }
-        ];
+// ==========================
+//  100% FREE NOMINATIM AUTOCOMPLETE (USA)
+//  Works for pickup + delivery inputs
+//  Auto-fills: City, State, ZIP
+// ==========================
 
-        // State abbreviation mapping
-        const stateShortNames = {
-            "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR", "California": "CA",
-            "Colorado": "CO", "Connecticut": "CT", "Delaware": "DE", "Florida": "FL", "Georgia": "GA",
-            "Hawaii": "HI", "Idaho": "ID", "Illinois": "IL", "Indiana": "IN", "Iowa": "IA",
-            "Kansas": "KS", "Kentucky": "KY", "Louisiana": "LA", "Maine": "ME", "Maryland": "MD",
-            "Massachusetts": "MA", "Michigan": "MI", "Minnesota": "MN", "Mississippi": "MS", "Missouri": "MO",
-            "Montana": "MT", "Nebraska": "NE", "Nevada": "NV", "New Hampshire": "NH", "New Jersey": "NJ",
-            "New Mexico": "NM", "New York": "NY", "North Carolina": "NC", "North Dakota": "ND", "Ohio": "OH",
-            "Oklahoma": "OK", "Oregon": "OR", "Pennsylvania": "PA", "Rhode Island": "RI", "South Carolina": "SC",
-            "South Dakota": "SD", "Tennessee": "TN", "Texas": "TX", "Utah": "UT", "Vermont": "VT",
-            "Virginia": "VA", "Washington": "WA", "West Virginia": "WV", "Wisconsin": "WI", "Wyoming": "WY"
+// State short name map
+const stateShortNames = {
+  "Alabama": "AL","Alaska": "AK","Arizona": "AZ","Arkansas": "AR","California": "CA",
+  "Colorado": "CO","Connecticut": "CT","Delaware": "DE","Florida": "FL","Georgia": "GA",
+  "Hawaii": "HI","Idaho": "ID","Illinois": "IL","Indiana": "IN","Iowa": "IA","Kansas": "KS",
+  "Kentucky": "KY","Louisiana": "LA","Maine": "ME","Maryland": "MD","Massachusetts": "MA",
+  "Michigan": "MI","Minnesota": "MN","Mississippi": "MS","Missouri": "MO","Montana": "MT",
+  "Nebraska": "NE","Nevada": "NV","New Hampshire": "NH","New Jersey": "NJ","New Mexico": "NM",
+  "New York": "NY","North Carolina": "NC","North Dakota": "ND","Ohio": "OH","Oklahoma": "OK",
+  "Oregon": "OR","Pennsylvania": "PA","Rhode Island": "RI","South Carolina": "SC","South Dakota": "SD",
+  "Tennessee": "TN","Texas": "TX","Utah": "UT","Vermont": "VT","Virginia": "VA","Washington": "WA",
+  "West Virginia": "WV","Wisconsin": "WI","Wyoming": "WY"
+};
+
+// Debounce helper (to avoid rate limit)
+function debounce(fn, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
+}
+
+// Setup Nominatim autocomplete
+function setupNominatim(inputId, listId, confirmFieldId) {
+  const input = document.getElementById(inputId);
+  const list = document.getElementById(listId);
+
+  const search = debounce(async () => {
+    const q = input.value.trim();
+    list.innerHTML = '';
+    if (q.length < 1) {
+      list.style.display = 'none';
+      return;
+    }
+
+    // ZIP-only query
+    let url;
+    if (/^\d{5}$/.test(q)) {
+      url = `https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=us&addressdetails=1&postalcode=${q}`;
+    } else {
+      url = `https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=us&addressdetails=1&limit=8&q=${encodeURIComponent(q)}`;
+    }
+
+    try {
+      const res = await fetch(url, { headers: { 'Accept-Language': 'en' }});
+      const data = await res.json();
+      if (!data.length) {
+        const no = document.createElement('div');
+        no.className = 'item';
+        no.textContent = 'No results found';
+        list.appendChild(no);
+        list.style.display = 'block';
+        return;
+      }
+
+      data.forEach(place => {
+        const addr = place.address || {};
+        const city = addr.city || addr.town || addr.village || addr.county || '';
+        const stateFull = addr.state || '';
+        const state = stateShortNames[stateFull] || stateFull;
+        const zip = addr.postcode || '';
+        const label = `${city ? city + ', ' : ''}${state}${zip ? ' ' + zip : ''}`;
+
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `<strong>${city || place.display_name.split(',')[0]}</strong>, ${state}${zip ? ' <span class="zip-code">' + zip + '</span>' : ''}`;
+        div.onclick = () => {
+          input.value = label;
+          list.style.display = 'none';
+          const confirmEl = document.getElementById(confirmFieldId);
+          if (confirmEl) confirmEl.value = label;
         };
+        list.appendChild(div);
+      });
+      list.style.display = 'block';
+    } catch (e) {
+      console.error(e);
+    }
+  }, 300);
 
-        // Popular cities for quick suggestions
-        const popularCities = {
-            "New York": ["New York, NY", "Buffalo, NY", "Rochester, NY", "Albany, NY", "Syracuse, NY"],
-            "California": ["Los Angeles, CA", "San Francisco, CA", "San Diego, CA", "Sacramento, CA", "San Jose, CA"],
-            "Texas": ["Houston, TX", "Dallas, TX", "Austin, TX", "San Antonio, TX", "Fort Worth, TX"],
-            "Florida": ["Miami, FL", "Orlando, FL", "Tampa, FL", "Jacksonville, FL", "Tallahassee, FL"],
-            "Illinois": ["Chicago, IL", "Springfield, IL", "Peoria, IL", "Rockford, IL", "Naperville, IL"]
-        };
+  input.addEventListener('input', search);
 
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Populate year dropdown
-            const yearSelect = document.getElementById('vehicle-year');
-            const currentYear = new Date().getFullYear();
-            for (let year = currentYear; year >= 1980; year--) {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                yearSelect.appendChild(option);
-            }
-            
-            // Set minimum date for shipping date to today
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('shipping-date').min = today;
-            
-            // Setup autocomplete for location fields
-            setupAutocomplete('pickup', 'pickup-list');
-            setupAutocomplete('delivery', 'delivery-list');
-            
-            // Form submission handler for first form
-            document.getElementById('quote-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Hide calculator and show confirmation page
-                document.querySelector('.calculator').style.display = 'none';
-                document.getElementById('confirmation-page').style.display = 'block';
-                
-                // Populate confirmation form with selected values
-                document.getElementById('pickup-zip').value = document.getElementById('pickup').value;
-                document.getElementById('dropoff-zip').value = document.getElementById('delivery').value;
-            });
-            
-            // Form submission handler for confirmation page
-            document.getElementById('quote-details-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Show success message
-                document.getElementById('success-message').style.display = 'block';
-                
-                // Reset form after 3 seconds
-                setTimeout(() => {
-                    this.reset();
-                    document.getElementById('success-message').style.display = 'none';
-                    document.getElementById('confirmation-page').style.display = 'none';
-                    document.querySelector('.calculator').style.display = 'block';
-                }, 3000);
-            });
-            
-            // Back button handler
-            document.getElementById('back-btn').addEventListener('click', function() {
-                document.getElementById('confirmation-page').style.display = 'none';
-                document.querySelector('.calculator').style.display = 'block';
-            });
-        });
+  // Hide list on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest(`#${inputId}`) && !e.target.closest(`#${listId}`)) {
+      list.style.display = 'none';
+    }
+  });
+}
 
-        // Dropdown functionality
-        document.querySelectorAll('.dropdown-toggle').forEach(button => {
-            button.addEventListener('click', function() {
-                const dropdown = this.parentElement;
-                const isOpen = dropdown.classList.contains('open');
-                
-                // Close all dropdowns
-                document.querySelectorAll('.dropdown').forEach(d => {
-                    d.classList.remove('open');
-                });
-                
-                // Toggle current dropdown
-                if (!isOpen) {
-                    dropdown.classList.add('open');
-                }
-            });
-        });
-        
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.dropdown')) {
-                document.querySelectorAll('.dropdown').forEach(d => {
-                    d.classList.remove('open');
-                });
-            }
-        });
-        
-        // Tab switching
-        document.querySelectorAll('.location-form__tabs--link').forEach(tab => {
-            tab.addEventListener('click', function() {
-                const target = this.getAttribute('data-target');
-                
-                // Update active tab
-                document.querySelectorAll('.location-form__tabs--link').forEach(t => {
-                    t.classList.remove('active');
-                });
-                this.classList.add('active');
-                
-                // Show target content
-                document.querySelectorAll('.location-form__content > div').forEach(content => {
-                    content.classList.remove('active');
-                });
-                document.querySelector(target).classList.add('active');
-            });
-        });
+// ======= Initialization =======
+document.addEventListener('DOMContentLoaded', () => {
+  // Setup both fields
+  setupNominatim('pickup', 'pickup-list', 'pickup-zip');
+  setupNominatim('delivery', 'delivery-list', 'dropoff-zip');
 
-        // Pickup date select
-        document.querySelectorAll('.time .dropdown-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelector('#time input').value = item.textContent;
-                document.querySelector('.time.dropdown').classList.remove('open');
-            });
-        });
+  // Populate years
+  const yearSelect = document.getElementById('vehicle-year');
+  const currentYear = new Date().getFullYear();
+  for (let y = currentYear; y >= 1980; y--) {
+    const o = document.createElement('option');
+    o.value = y;
+    o.textContent = y;
+    yearSelect.appendChild(o);
+  }
 
-        // Car select
-        document.querySelectorAll('.size-of-car .car-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const input = document.querySelector('#size-of-car input');
-                if (!item.classList.contains('plus-box')) {
-                    input.value = item.querySelector('small').textContent;
-                    document.querySelector('.size-of-car.dropdown').classList.remove('open');
-                }
-            });
-        });
+  // Min date = today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('shipping-date').min = today;
 
-        // Show more cars on + click
-        document.getElementById('showMoreCars').addEventListener('click', () => {
-            document.getElementById('moreCars').classList.toggle('hidden-cars');
-        });
+  // Handle first form submit
+  document.getElementById('quote-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.querySelector('.calculator').style.display = 'none';
+    document.getElementById('confirmation-page').style.display = 'block';
+    document.getElementById('pickup-zip').value = document.getElementById('pickup').value;
+    document.getElementById('dropoff-zip').value = document.getElementById('delivery').value;
+  });
 
-        // Enhanced location search with local city database and ZIP code lookup
-        function setupAutocomplete(inputId, listId) {
-            const input = document.getElementById(inputId);
-            const list = document.getElementById(listId);
+  // Handle confirmation form submit
+  document.getElementById('quote-details-form').addEventListener('submit', e => {
+    e.preventDefault();
+    document.getElementById('success-message').style.display = 'block';
+    setTimeout(() => {
+      e.target.reset();
+      document.getElementById('success-message').style.display = 'none';
+      document.getElementById('confirmation-page').style.display = 'none';
+      document.querySelector('.calculator').style.display = 'block';
+    }, 3000);
+  });
 
-            input.addEventListener('input', () => {
-                const query = input.value.trim().toLowerCase();
-                
-                // Clear previous results
-                list.innerHTML = '';
-                
-                if (query.length < 1) {
-                    list.style.display = 'none';
-                    return;
-                }
+  // Back button
+  document.getElementById('back-btn').addEventListener('click', () => {
+    document.getElementById('confirmation-page').style.display = 'none';
+    document.querySelector('.calculator').style.display = 'block';
+  });
 
-                // Check if input is a ZIP code (5 digits)
-                const isZipCode = /^\d{5}$/.test(query);
-                
-                if (isZipCode) {
-                    // Look up city by ZIP code
-                    const cityByZip = usCities.find(city => city.zip === query);
-                    if (cityByZip) {
-                        list.innerHTML = '';
-                        const div = document.createElement('div');
-                        div.className = 'item';
-                        div.innerHTML = `<strong>${cityByZip.city}</strong>, ${cityByZip.state} <span class="zip-code">${cityByZip.zip}</span>`;
-                        div.onclick = () => {
-                            input.value = `${cityByZip.city}, ${cityByZip.state}`;
-                            list.style.display = 'none';
-                        };
-                        list.appendChild(div);
-                        list.style.display = 'block';
-                    } else {
-                        // No city found for this ZIP code
-                        const noResults = document.createElement('div');
-                        noResults.className = 'item';
-                        noResults.textContent = 'No results found for this ZIP code';
-                        list.appendChild(noResults);
-                        list.style.display = 'block';
-                    }
-                    return;
-                }
+  // ===== FIXED DROPDOWN FUNCTIONALITY =====
+  // Dropdown functionality for pickup date
+  document.querySelectorAll('.dropdown-toggle').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent event from bubbling up
+      const dropdown = this.parentElement;
+      const isOpen = dropdown.classList.contains('open');
+      
+      // Close all dropdowns
+      document.querySelectorAll('.dropdown').forEach(d => {
+        d.classList.remove('open');
+      });
+      
+      // Toggle current dropdown
+      if (!isOpen) {
+        dropdown.classList.add('open');
+      }
+    });
+  });
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown').forEach(d => {
+        d.classList.remove('open');
+      });
+    }
+  });
+  
+  // Tab switching
+  document.querySelectorAll('.location-form__tabs--link').forEach(tab => {
+    tab.addEventListener('click', function() {
+      const target = this.getAttribute('data-target');
+      
+      // Update active tab
+      document.querySelectorAll('.location-form__tabs--link').forEach(t => {
+        t.classList.remove('active');
+      });
+      this.classList.add('active');
+      
+      // Show target content
+      document.querySelectorAll('.location-form__content > div').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.querySelector(target).classList.add('active');
+    });
+  });
 
-                // First check if we have popular cities for this state
-                let quickSuggestions = [];
-                for (const [state, cities] of Object.entries(popularCities)) {
-                    if (state.toLowerCase().startsWith(query)) {
-                        quickSuggestions = cities;
-                        break;
-                    }
-                }
+  // Pickup date select - FIXED
+  document.querySelectorAll('.time .dropdown-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelector('#time input').value = item.textContent;
+      document.querySelector('.time.dropdown').classList.remove('open');
+    });
+  });
 
-                // If we have quick suggestions, show them immediately
-                if (quickSuggestions.length > 0) {
-                    list.innerHTML = '';
-                    quickSuggestions.forEach(city => {
-                        const div = document.createElement('div');
-                        div.className = 'item';
-                        div.innerHTML = `<strong>${city.split(',')[0]}</strong>, ${city.split(',')[1]}`;
-                        div.onclick = () => {
-                            input.value = city;
-                            list.style.display = 'none';
-                        };
-                        list.appendChild(div);
-                    });
-                    list.style.display = 'block';
-                    return;
-                }
+  // Car select
+  document.querySelectorAll('.size-of-car .car-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const input = document.querySelector('#size-of-car input');
+      if (!item.classList.contains('plus-box')) {
+        input.value = item.querySelector('small').textContent;
+        document.querySelector('.size-of-car.dropdown').classList.remove('open');
+      }
+    });
+  });
 
-                // Otherwise, search through our city database
-                const matches = usCities.filter(city => 
-                    city.city.toLowerCase().includes(query) || 
-                    city.state.toLowerCase().includes(query) ||
-                    city.zip.includes(query)
-                ).slice(0, 8); // Limit to 8 results
+  // Show more cars on + click
+  document.getElementById('showMoreCars').addEventListener('click', () => {
+    document.getElementById('moreCars').classList.toggle('hidden-cars');
+  });
+});
 
-                if (matches.length === 0) {
-                    const noResults = document.createElement('div');
-                    noResults.className = 'item';
-                    noResults.textContent = 'No results found';
-                    list.appendChild(noResults);
-                } else {
-                    matches.forEach(city => {
-                        const div = document.createElement('div');
-                        div.className = 'item';
-                        div.innerHTML = `<strong>${city.city}</strong>, ${city.state} <span class="zip-code">${city.zip}</span>`;
-                        div.onclick = () => {
-                            input.value = `${city.city}, ${city.state}`;
-                            list.style.display = 'none';
-                        };
-                        list.appendChild(div);
-                    });
-                }
-                
-                list.style.display = 'block';
-            });
+document.getElementById('addMoreVehicles').addEventListener('click', function() {
+  // Check if number already shown
+  if (!this.classList.contains('number-shown')) {
+    this.innerHTML += ' — <span class="phone-number">+1 (786) 745-6259</span>';
+    this.classList.add('number-shown');
+  }
+});
 
-            // Hide suggestions when clicking outside
-            document.addEventListener('click', e => {
-                if (!e.target.closest(`#${inputId}`) && !e.target.closest(`#${listId}`)) {
-                    list.style.display = 'none';
-                }
-            });
+// last two btns
+document.addEventListener('DOMContentLoaded', function() {
+  const checkbox = document.getElementById('isDealer');
+  const dealerBtn = document.getElementById('dealer-btn');
+  const btnContainer = document.getElementById('buttonContainer');
 
-            // Show suggestions when focusing on input
-            input.addEventListener('focus', () => {
-                if (input.value.length > 0) {
-                    list.style.display = 'block';
-                }
-            });
-        }
-    </script>
+  // ✅ On load — ensure correct state
+  if (checkbox.checked) {
+    dealerBtn.classList.remove('hidden');
+    btnContainer.classList.add('show-dealer');
+  } else {
+    dealerBtn.classList.add('hidden');
+    btnContainer.classList.remove('show-dealer');
+  }
+
+  // ✅ Toggle on change
+  checkbox.addEventListener('change', function() {
+    if (this.checked) {
+      dealerBtn.classList.remove('hidden');
+      btnContainer.classList.add('show-dealer');
+    } else {
+      dealerBtn.classList.add('hidden');
+      btnContainer.classList.remove('show-dealer');
+    }
+  });
+});
+
+
+</script>
+
 </body>
 </html>
