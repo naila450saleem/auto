@@ -133,7 +133,7 @@ body {
   justify-content: center;
   align-items: center;
   background-color: #b6f87c;
-  padding: 15px 0;
+  padding: 2px 0;
   border-radius: 6px;
   transition: all 0.3s ease;
 }
@@ -165,6 +165,30 @@ body {
 
 .continue-buttons.show-dealer .btn {
   width: 100%;
+}
+
+/* --- Mobile: only break text in 2nd button --- */
+@media (max-width: 768px) {
+  .mobile-break {
+    display: inline;
+  }
+
+  .continue-buttons .btn {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+    /* Increase line-height only for the second button */
+  #dealer-btn {
+    line-height: 1.6; /* adjust spacing between lines */
+  }
+
+}
+
+/* Hide <br> on desktop */
+@media (min-width: 769px) {
+  .mobile-break {
+    display: none;
+  }
 }
 
 
@@ -533,6 +557,106 @@ body {
     color: #666;
     margin-left: 5px;
 }
+
+/* --- Popup Background --- */
+  /* --- Popup Styling --- */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            animation: fadeIn 0.3s ease;
+            position: relative;
+        }
+
+        .popup-box h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 24px;
+        }
+        
+        .popup-box p {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .phone-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #3498db;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .close-popup {
+            background: #3498db;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .close-popup:hover {
+            background: #2980b9;
+        }
+        
+        .popup-icon {
+            font-size: 50px;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .popup-box {
+                padding: 25px 20px;
+            }
+            
+            .phone-number {
+                font-size: 22px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -718,9 +842,21 @@ body {
                             </div>
                         </div> -->
                         
-                       <a id="addMoreVehicles" class="pl-2 modal-toggle w-100 text-add-car text-right">
+   <!-- Trigger Link -->
+<a id="addMoreVehicles" class="pl-2 modal-toggle w-100 text-add-car text-right" href="#">
   + Add More Vehicles
 </a>
+
+<!-- Popup -->
+    <div class="popup-overlay" id="phonePopup">
+        <div class="popup-box">
+            <div class="popup-icon">📞</div>
+            <h3>Call Us</h3>
+            <p>Speak directly with our shipping specialists</p>
+            <p class="phone-number">+1 (786) 745-6259</p>
+            <button class="close-popup">Close</button>
+        </div>
+    </div>
 
                         
                      <div class="dealer-wrapper">
@@ -730,8 +866,14 @@ body {
 
 <div class="continue-buttons" id="buttonContainer">
   <input type="submit" id="route-confirm" class="btn" value="Get My Quote">
-  <input type="button" id="dealer-btn" class="btn dealer-btn hidden" value="Continue in Dealership Portal">
+  <button type="button" id="dealer-btn" class="btn dealer-btn hidden">
+    Continue in<span class="mobile-break"><br></span>Dealership Portal
+  </button>
 </div>
+
+
+
+
 
 <div class="success-message" id="success-message">
   Your quote request has been submitted successfully!
@@ -1096,13 +1238,32 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-document.getElementById('addMoreVehicles').addEventListener('click', function() {
-  // Check if number already shown
-  if (!this.classList.contains('number-shown')) {
-    this.innerHTML += ' — <span class="phone-number">+1 (786) 745-6259</span>';
-    this.classList.add('number-shown');
-  }
-});
+
+// Show popup when clicking "Add More Vehicles"
+        document.getElementById('addMoreVehicles').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('phonePopup').style.display = 'flex';
+        });
+
+        // Close popup when clicking the close button
+        document.querySelector('.close-popup').addEventListener('click', function() {
+            document.getElementById('phonePopup').style.display = 'none';
+        });
+
+        // Close popup if user clicks outside the box
+        document.getElementById('phonePopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+        
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('phonePopup').style.display = 'none';
+            }
+        });
+
 
 // last two btns
 document.addEventListener('DOMContentLoaded', function() {
