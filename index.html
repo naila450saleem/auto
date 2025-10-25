@@ -1107,8 +1107,17 @@ body {
         </div>
 
         <div class="next-step-buttons">
-    <input type="submit" id="continue-btn" class="btn-primary" value="Continue">
+    <button id="continue-btn" class="btn-primary">Continue</button>
 </div>
+
+
+
+<input type="hidden" id="pickup-lat">
+<input type="hidden" id="pickup-lon">
+<input type="hidden" id="delivery-lat">
+<input type="hidden" id="delivery-lon">
+
+
 
 
         <p class="terms-note">
@@ -1245,7 +1254,7 @@ body {
             
         
 
-    <script>
+   <script>
 // ==========================
 //  100% FREE NOMINATIM AUTOCOMPLETE (USA)
 //  Works for pickup + delivery inputs
@@ -1348,6 +1357,35 @@ function setupNominatim(inputId, listId, confirmFieldId) {
 }
 
 // ==========================
+// SAVE FORM DATA TO LOCALSTORAGE
+// ==========================
+function saveFormData() {
+    // Get all form values
+    const vehicleMake = document.getElementById('vehicle-make').value;
+    const vehicleModel = document.getElementById('vehicle-model').value;
+    const vehicleYear = document.getElementById('vehicle-year').value;
+    const pickupLocation = document.getElementById('pickup').value;
+    const deliveryLocation = document.getElementById('delivery').value;
+    const shippingDate = document.getElementById('shipping-date').value;
+    const vehicleCondition = document.querySelector('input[name="running"]:checked').value;
+    const carrierType = document.querySelector('input[name="carrier-type"]:checked').value;
+    const pickupDate = document.querySelector('#time input').value;
+
+    // Save to localStorage
+    localStorage.setItem('vehicleMake', vehicleMake);
+    localStorage.setItem('vehicleModel', vehicleModel);
+    localStorage.setItem('vehicleYear', vehicleYear);
+    localStorage.setItem('pickupLocation', pickupLocation);
+    localStorage.setItem('deliveryLocation', deliveryLocation);
+    localStorage.setItem('shippingDate', shippingDate);
+    localStorage.setItem('vehicleCondition', vehicleCondition);
+    localStorage.setItem('carrierType', carrierType);
+    localStorage.setItem('pickupDate', pickupDate);
+    
+    return true;
+}
+
+// ==========================
 // DOCUMENT READY
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
@@ -1438,6 +1476,7 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', () => {
       document.querySelector('#time input').value = item.textContent;
       document.querySelector('.time.dropdown').classList.remove('open');
+      saveFormData(); // Save when pickup date is selected
     });
   });
 
@@ -1498,8 +1537,6 @@ document.addEventListener('DOMContentLoaded', () => {
     checkbox.addEventListener('change', updateDealerUI);
   }
 
- 
-
   // ---------- SUMMARY ELEMENTS ----------
   const summaryVehicle = document.getElementById('summary-vehicle');
   const summaryPickup = document.getElementById('summary-pickup');
@@ -1519,6 +1556,7 @@ document.addEventListener('DOMContentLoaded', () => {
       item.addEventListener('click', () => {
         input.value = item.textContent;
         summaryEl.textContent = item.textContent;
+        saveFormData(); // Save when location is selected
       });
     });
   }
@@ -1529,10 +1567,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---------- INPUT EVENT: MANUAL TYPING ----------
   pickupInput.addEventListener('input', () => {
     summaryPickup.textContent = pickupInput.value || 'Select pickup';
+    saveFormData(); // Auto-save when typing
   });
 
   deliveryInput.addEventListener('input', () => {
     summaryDropoff.textContent = deliveryInput.value || 'Select dropoff';
+    saveFormData(); // Auto-save when typing
   });
 
   // ---------- GOOGLE AUTOCOMPLETE ----------
@@ -1549,6 +1589,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (place && place.formatted_address) {
         pickupInput.value = place.formatted_address;
         summaryPickup.textContent = place.formatted_address;
+        saveFormData();
       }
     });
 
@@ -1557,6 +1598,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (place && place.formatted_address) {
         deliveryInput.value = place.formatted_address;
         summaryDropoff.textContent = place.formatted_address;
+        saveFormData();
       }
     });
   }
@@ -1568,6 +1610,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const year = vehicleYear.value;
     summaryVehicle.textContent =
       `${year ? year + ' ' : ''}${make ? make.charAt(0).toUpperCase() + make.slice(1) : ''}${model ? ' ' + model : ''}`.trim() || 'Select vehicle';
+    saveFormData(); // Save when vehicle details change
   }
   if (vehicleMake) vehicleMake.addEventListener('change', updateVehicleSummary);
   if (vehicleModel) vehicleModel.addEventListener('input', updateVehicleSummary);
@@ -1578,11 +1621,34 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', () => {
       if (summaryDate) summaryDate.textContent = item.textContent;
       document.querySelector('.time input').value = item.textContent;
+      saveFormData(); // Save when pickup date is selected
     });
   });
 
-});
+  // ---------- AUTO-SAVE FORM DATA ON CHANGE ----------
+  // Auto-save when form fields change
+  const formFields = [
+    'vehicle-make', 'vehicle-model', 'vehicle-year', 'pickup', 'delivery',
+    'shipping-date'
+  ];
 
+  formFields.forEach(fieldId => {
+    const element = document.getElementById(fieldId);
+    if (element) {
+      element.addEventListener('change', saveFormData);
+    }
+  });
+
+  // For radio buttons, add event listeners to both
+  document.querySelectorAll('input[name="running"]').forEach(radio => {
+    radio.addEventListener('change', saveFormData);
+  });
+
+  document.querySelectorAll('input[name="carrier-type"]').forEach(radio => {
+    radio.addEventListener('change', saveFormData);
+  });
+
+});
 
 // ==========================
 // DISTANCE CALCULATION (NO API KEY)
@@ -1652,17 +1718,26 @@ async function calculateMiles() {
   const summaryEl = document.getElementById('summary-distance');
   if (summaryEl) {
     summaryEl.textContent = `${miles} miles`;
-  } else {
-    alert(`Distance: ${miles} miles`);
-  }
+  } 
+//   else {
+//     alert(`Distance: ${miles} miles`);
+//   }
 }
 
 // Run calculation automatically when both fields filled
 document.getElementById('delivery').addEventListener('change', calculateMiles);
 
-// pricing page
+// ==========================
+// UPDATED CONTINUE BUTTON HANDLER
+// ==========================
 document.getElementById('continue-btn').addEventListener('click', function(e) {
   e.preventDefault();
+
+  // First save all form data
+  if (!saveFormData()) {
+    alert("Please fill all required fields.");
+    return;
+  }
 
   const pickupLat = document.getElementById('pickup-lat').value;
   const pickupLon = document.getElementById('pickup-lon').value;
@@ -1695,9 +1770,8 @@ document.getElementById('continue-btn').addEventListener('click', function(e) {
     })
     .catch(() => alert("Error fetching route data. Try again."));
 });
-
-
 </script>
+
 
 
 </body>

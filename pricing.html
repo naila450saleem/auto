@@ -31,54 +31,6 @@
     gap: 25px;
   }
 
-  .pricing-card {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-    width: 300px;
-    padding: 30px;
-    text-align: center;
-    transition: 0.3s ease;
-  }
-
-  .pricing-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  }
-
-  .plan-name {
-    font-size: 22px;
-    font-weight: 600;
-    color: #0d6efd;
-    margin-bottom: 15px;
-  }
-
-  .distance {
-    font-size: 18px;
-    margin-bottom: 8px;
-    color: #444;
-  }
-
-  .price {
-    font-size: 36px;
-    font-weight: 700;
-    color: #28a745;
-    margin: 10px 0 20px;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 25px;
-    color: #666;
-    font-size: 15px;
-  }
-
-  ul li {
-    padding: 6px 0;
-    border-bottom: 1px solid #eee;
-  }
-
   .btn {
     display: inline-block;
     background: #0d6efd;
@@ -98,91 +50,332 @@
   .back-btn {
     display: block;
     margin: 40px auto 0;
-    background: #6c757d;
+    background: #b6f87c;
+    color: #000;
+    margin-bottom: 30px;
+    font-weight: bold;
+    width: 70%;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
 
   .back-btn:hover {
     background: #5a6268;
   }
 
+  /* Price Options Section */
+.price-options {
+  display: flex !important;        /* 🔥 force flex layout */
+  flex-direction: row !important;  /* side by side */
+  justify-content: center;
+  align-items: stretch;
+  gap: 30px;
+  flex-wrap: nowrap;               /* don’t wrap to next line */
+  max-width: 1000px;
+  margin: 40px auto;
+  background: none;                /* remove background if still wrapping both */
+  box-shadow: none;                /* remove outer shadow */
+  border-radius: 0;
+  padding: 0;
+}
+
+.price-option {
+  flex: 1 1 45%;                   /* two boxes side by side */
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.price-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.price-option h3 {
+  color: #0d6efd;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.price-amount {
+  font-size: 36px;
+  font-weight: 700;
+  color: #28a745;
+  margin: 10px 0;
+}
+
+.price-description {
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.book-online {
+  color: #0d6efd;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.book-online:hover {
+  text-decoration: underline;
+}
+
+/* mobile view only */
+@media (max-width: 768px) {
+  .price-options {
+    flex-direction: column !important; /* stack on small screens */
+  }
+}
+
+
+
+  /* Summary Section Styles */
+  .summary-section {
+    max-width: 1000px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    padding: 30px;
+  }
+
+  .summary-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .summary-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .summary-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #0d6efd;
+  }
+
+  .summary-label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+
+  .summary-value {
+    color: #222;
+    font-weight: 500;
+  }
+
+  .total-price {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+
+  .total-price-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 10px;
+  }
+
+  .total-price-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: #28a745;
+  }
+
   @media (max-width: 768px) {
-    .pricing-card {
-      width: 85%;
+    .summary-section,
+    .price-options {
+      margin: 20px;
+      padding: 20px;
     }
   }
+
+ 
+
 </style>
 </head>
 <body>
 
 <header>Pricing Summary</header>
 
-<div class="container">
-  <div class="pricing-card" id="economy">
-    <div class="plan-name">Economy</div>
-    <div class="distance">Distance: <span class="miles">--</span> miles</div>
-    <div class="price">$--</div>
-    <ul>
-      <li>Standard open carrier</li>
-      <li>Delivery within 7-10 days</li>
-      <li>Insurance included</li>
-    </ul>
-    <button class="btn">Book Economy</button>
+<!-- Price Options Section - Only 2 Options -->
+<div class="price-options">
+  <!-- Standard Price -->
+  <div class="price-option">
+    <h3>Standard Price</h3>
+    <div class="price-amount" id="standard-price">$0</div>
+    <div class="price-description">
+      A one-time full payment will be charged to your credit or debit card once a trusted car carrier is assigned to your order.
+    </div>
+    <a href="tel:224-218-2949" class="book-online">Book Online: 224-218-2949</a>
   </div>
 
-  <div class="pricing-card" id="standard">
-    <div class="plan-name">Standard</div>
-    <div class="distance">Distance: <span class="miles">--</span> miles</div>
-    <div class="price">$--</div>
-    <ul>
-      <li>Faster pickup (2-3 days)</li>
-      <li>Priority transport</li>
-      <li>Full tracking access</li>
-    </ul>
-    <button class="btn">Book Standard</button>
-  </div>
+  <!-- Divider -->
+  <hr style="border: none; border-top: 2px dashed #eee; margin: 30px 0;">
 
-  <div class="pricing-card" id="enclosed">
-    <div class="plan-name">Enclosed</div>
-    <div class="distance">Distance: <span class="miles">--</span> miles</div>
-    <div class="price">$--</div>
-    <ul>
-      <li>Enclosed carrier</li>
-      <li>Premium insurance</li>
-      <li>Luxury / classic vehicles</li>
-    </ul>
-    <button class="btn">Book Enclosed</button>
+  <!-- Discounted Cash Price -->
+  <div class="price-option">
+    <h3>Discounted Cash Price</h3>
+    <div class="price-amount" id="cash-price">$0</div>
+    <div class="price-description">
+      Deposit will be charged once a trucker is assigned for pickup. The balance can be paid upon delivery directly to the trucker in cash, cashier's check, certified funds.
+    </div>
+    <a href="tel:224-218-2949" class="book-online">Book Online: 224-218-2949</a>
+  </div>
+</div>
+
+<!-- Summary Section -->
+<div class="summary-section">
+  <div class="summary-title">Summary of the Quote</div>
+  
+  <div class="summary-details">
+    <!-- Vehicle -->
+    <div class="summary-item">
+      <div class="summary-label">Vehicle</div>
+      <div class="summary-value" id="summary-vehicle">Small Car</div>
+      <div class="summary-value" id="summary-condition">
+        <span style="color: #28a745;">●</span> Operable  
+        <span style="color: #ccc;">○</span> Inoperable (+$150)
+      </div>
+    </div>
+    
+    <!-- Carrier -->
+    <div class="summary-item">
+      <div class="summary-label">Preferred Carrier</div>
+      <div class="summary-value" id="summary-carrier">Open</div>
+    </div>
+    
+    <!-- Route -->
+    <div class="summary-item">
+      <div class="summary-label">Route</div>
+      <div class="summary-value" id="summary-route">
+        From: <span id="summary-pickup">--</span><br>
+        To: <span id="summary-delivery">--</span><br>
+        Date: <span id="summary-date">7DAYS</span>
+      </div>
+    </div>
+    
+    <!-- Shipping Plan -->
+    <div class="summary-item">
+      <div class="summary-label">Shipping Plan</div>
+      <div class="summary-value" id="summary-plan">Standard Price: $0</div>
+    </div>
+  </div>
+  
+  <div class="total-price">
+    <div class="total-price-label">Total Shipment Price</div>
+    <div class="total-price-value" id="total-price">$0</div>
+    <p>No payment required until your pickup is scheduled.</p>
   </div>
 </div>
 
 <button class="btn back-btn" onclick="goBack()">← Go Back</button>
 
 <script>
-  // Fetch miles from localStorage
+  // Fetch data from localStorage
   const miles = parseFloat(localStorage.getItem('tripMiles')) || 0;
+  const vehicleMake = localStorage.getItem('vehicleMake') || '';
+  const vehicleModel = localStorage.getItem('vehicleModel') || '';
+  const vehicleYear = localStorage.getItem('vehicleYear') || '';
+  const pickupLocation = localStorage.getItem('pickupLocation') || '--';
+  const deliveryLocation = localStorage.getItem('deliveryLocation') || '--';
+  const shippingDate = localStorage.getItem('shippingDate') || '--';
+  const vehicleCondition = localStorage.getItem('vehicleCondition') || 'yes';
+  const carrierType = localStorage.getItem('carrierType') || 'open';
+  const pickupDate = localStorage.getItem('pickupDate') || '--';
 
-  const plans = [
-    { id: 'economy', rate: 1.00 },
-    { id: 'standard', rate: 1.25 },
-    { id: 'enclosed', rate: 1.65 }
-  ];
-
-  plans.forEach(plan => {
-    const card = document.getElementById(plan.id);
-    const milesElem = card.querySelector('.miles');
-    const priceElem = card.querySelector('.price');
-
-    if (miles > 0) {
-      milesElem.textContent = miles.toFixed(2);
-      const total = (miles * plan.rate).toFixed(2);
-      priceElem.textContent = `$${total}`;
-    } else {
-      milesElem.textContent = "N/A";
-      priceElem.textContent = "$0.00";
+  // Format dates for display
+  function formatDate(dateString) {
+    if (!dateString || dateString === '--') return '7DAYS';
+    
+    // If it's already a readable string (from dropdown)
+    if (dateString.includes('As soon as possible') || 
+        dateString.includes('Within 7 days') || 
+        dateString.includes('On a particular date') || 
+        dateString.includes('I don\'t know yet')) {
+        return dateString;
     }
-  });
+    
+    // If it's a date string, format it
+    try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+    } catch (e) {
+        return dateString;
+    }
+  }
+
+  // Format carrier type for display
+  function formatCarrierType(type) {
+    if (type === 'open') return 'Open';
+    if (type === 'enclosed') return 'Enclosed';
+    return type;
+  }
+
+  // Format vehicle for display
+  function formatVehicle() {
+    const vehicle = `${vehicleYear} ${vehicleMake} ${vehicleModel}`.trim();
+    return vehicle || 'Small Car';
+  }
+
+  // Calculate base price based on miles
+  let basePrice = 0;
+  if (miles > 0) {
+    basePrice = miles * 1.00; // $1 per mile base rate
+  }
+
+  // Update summary section
+  document.getElementById('summary-vehicle').textContent = formatVehicle();
+  
+  // Update vehicle condition display
+  const conditionElement = document.getElementById('summary-condition');
+  if (vehicleCondition === 'yes') {
+    conditionElement.innerHTML = '<span style="color: #28a745;">●</span> Operable  <span style="color: #ccc;">○</span> Inoperable (+$150)';
+  } else {
+    conditionElement.innerHTML = '<span style="color: #ccc;">○</span> Operable  <span style="color: #28a745;">●</span> Inoperable (+$150)';
+    // Add $150 for inoperable vehicles
+    basePrice += 150;
+  }
+  
+  document.getElementById('summary-carrier').textContent = formatCarrierType(carrierType);
+  document.getElementById('summary-pickup').textContent = pickupLocation;
+  document.getElementById('summary-delivery').textContent = deliveryLocation;
+  
+  // Use pickup date from dropdown if available, otherwise use shipping date
+  const displayDate = pickupDate !== '--' ? pickupDate : shippingDate;
+  document.getElementById('summary-date').textContent = formatDate(displayDate);
+  
+  // Update price options
+  document.getElementById('standard-price').textContent = `$${basePrice.toFixed(2)}`;
+  document.getElementById('cash-price').textContent = `$${(basePrice * 0.95).toFixed(2)}`; // 5% discount for cash
+  
+  // Update shipping plan
+  document.getElementById('summary-plan').textContent = `Standard Price: $${basePrice.toFixed(2)}`;
+  
+  // Update total price
+  document.getElementById('total-price').textContent = `$${basePrice.toFixed(2)}`;
 
   function goBack() {
-    window.location.href = "index.html"; // adjust if needed
+    window.location.href = "index.html"; // adjust to your main page URL
   }
 </script>
 
