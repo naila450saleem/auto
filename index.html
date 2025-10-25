@@ -596,10 +596,6 @@ body {
     }
 }
 
-
-
-
-
 .form-row {
     display: flex;
     gap: 15px;
@@ -835,6 +831,7 @@ body {
             }
         }
 
+       
     </style>
 </head>
 <body>
@@ -891,6 +888,13 @@ body {
                                 <div class="list-group" id="delivery-list"></div>
                             </div>
                         </div>
+
+                        <!-- Hidden fields for coordinates -->
+<input type="hidden" id="pickup-lat">
+<input type="hidden" id="pickup-lon">
+<input type="hidden" id="delivery-lat">
+<input type="hidden" id="delivery-lon">
+
                         
                         <div class="group-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
@@ -1103,7 +1107,7 @@ body {
         </div>
 
         <div class="next-step-buttons">
-    <input type="submit" id="route-confirm" class="btn-primary" value="Continue">
+    <input type="submit" id="continue-btn" class="btn-primary" value="Continue">
 </div>
 
 
@@ -1134,6 +1138,7 @@ body {
     </div>
   </div>
 </div>
+
 
     
 
@@ -1261,7 +1266,9 @@ const stateShortNames = {
   "West Virginia": "WV","Wisconsin": "WI","Wyoming": "WY"
 };
 
-// Debounce helper (to avoid rate limit)
+// ==========================
+// DEBOUNCE FUNCTION
+// ==========================
 function debounce(fn, delay) {
   let timeout;
   return (...args) => {
@@ -1270,7 +1277,9 @@ function debounce(fn, delay) {
   };
 }
 
-// Setup Nominatim autocomplete
+// ==========================
+// NOMINATIM AUTOCOMPLETE
+// ==========================
 function setupNominatim(inputId, listId, confirmFieldId) {
   const input = document.getElementById(inputId);
   const list = document.getElementById(listId);
@@ -1283,7 +1292,6 @@ function setupNominatim(inputId, listId, confirmFieldId) {
       return;
     }
 
-    // ZIP-only query
     let url;
     if (/^\d{5}$/.test(q)) {
       url = `https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=us&addressdetails=1&postalcode=${q}`;
@@ -1292,8 +1300,9 @@ function setupNominatim(inputId, listId, confirmFieldId) {
     }
 
     try {
-      const res = await fetch(url, { headers: { 'Accept-Language': 'en' }});
+      const res = await fetch(url, { headers: { 'Accept-Language': 'en' } });
       const data = await res.json();
+
       if (!data.length) {
         const no = document.createElement('div');
         no.className = 'item';
@@ -1338,13 +1347,16 @@ function setupNominatim(inputId, listId, confirmFieldId) {
   });
 }
 
-// ======= Initialization =======
+// ==========================
+// DOCUMENT READY
+// ==========================
 document.addEventListener('DOMContentLoaded', () => {
-  // Setup both fields
+
+  // ---------- SETUP AUTOCOMPLETE ----------
   setupNominatim('pickup', 'pickup-list', 'pickup-zip');
   setupNominatim('delivery', 'delivery-list', 'dropoff-zip');
 
-  // Populate years
+  // ---------- POPULATE VEHICLE YEARS ----------
   const yearSelect = document.getElementById('vehicle-year');
   const currentYear = new Date().getFullYear();
   for (let y = currentYear; y >= 1980; y--) {
@@ -1354,90 +1366,74 @@ document.addEventListener('DOMContentLoaded', () => {
     yearSelect.appendChild(o);
   }
 
-  // Min date = today
+  // ---------- SET MIN DATE ----------
   const today = new Date().toISOString().split('T')[0];
-  document.getElementById('shipping-date').min = today;
+  const shippingDate = document.getElementById('shipping-date');
+  if (shippingDate) shippingDate.min = today;
 
-  // Handle first form submit
-  document.getElementById('quote-form').addEventListener('submit', e => {
-    e.preventDefault();
-    document.querySelector('.calculator').style.display = 'none';
-    document.getElementById('confirmation-page').style.display = 'block';
-    document.getElementById('pickup-zip').value = document.getElementById('pickup').value;
-    document.getElementById('dropoff-zip').value = document.getElementById('delivery').value;
-  });
+  // ---------- FORM SUBMIT HANDLERS ----------
+  const quoteForm = document.getElementById('quote-form');
+  const quoteDetailsForm = document.getElementById('quote-details-form');
 
-  // Handle confirmation form submit
-  document.getElementById('quote-details-form').addEventListener('submit', e => {
-    e.preventDefault();
-    document.getElementById('success-message').style.display = 'block';
-    setTimeout(() => {
-      e.target.reset();
-      document.getElementById('success-message').style.display = 'none';
+  if (quoteForm) {
+    quoteForm.addEventListener('submit', e => {
+      e.preventDefault();
+      document.querySelector('.calculator').style.display = 'none';
+      document.getElementById('confirmation-page').style.display = 'block';
+      document.getElementById('pickup-zip').value = document.getElementById('pickup').value;
+      document.getElementById('dropoff-zip').value = document.getElementById('delivery').value;
+    });
+  }
+
+  if (quoteDetailsForm) {
+    quoteDetailsForm.addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('success-message').style.display = 'block';
+      setTimeout(() => {
+        e.target.reset();
+        document.getElementById('success-message').style.display = 'none';
+        document.getElementById('confirmation-page').style.display = 'none';
+        document.querySelector('.calculator').style.display = 'block';
+      }, 3000);
+    });
+  }
+
+  // ---------- BACK BUTTON ----------
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
       document.getElementById('confirmation-page').style.display = 'none';
       document.querySelector('.calculator').style.display = 'block';
-    }, 3000);
-  });
+    });
+  }
 
- // Back button (safe version)
-const backBtn = document.getElementById('back-btn');
-if (backBtn) {
-  backBtn.addEventListener('click', () => {
-    document.getElementById('confirmation-page').style.display = 'none';
-    document.querySelector('.calculator').style.display = 'block';
-  });
-}
-
-
-  // ===== FIXED DROPDOWN FUNCTIONALITY =====
-  // Dropdown functionality for pickup date
+  // ---------- DROPDOWN FUNCTIONALITY ----------
   document.querySelectorAll('.dropdown-toggle').forEach(button => {
     button.addEventListener('click', function(e) {
-      e.stopPropagation(); // Prevent event from bubbling up
+      e.stopPropagation();
       const dropdown = this.parentElement;
       const isOpen = dropdown.classList.contains('open');
-      
-      // Close all dropdowns
-      document.querySelectorAll('.dropdown').forEach(d => {
-        d.classList.remove('open');
-      });
-      
-      // Toggle current dropdown
-      if (!isOpen) {
-        dropdown.classList.add('open');
-      }
+      document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+      if (!isOpen) dropdown.classList.add('open');
     });
   });
-  
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.dropdown')) {
-      document.querySelectorAll('.dropdown').forEach(d => {
-        d.classList.remove('open');
-      });
-    }
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
   });
-  
-  // Tab switching
+
+  // ---------- TABS ----------
   document.querySelectorAll('.location-form__tabs--link').forEach(tab => {
     tab.addEventListener('click', function() {
       const target = this.getAttribute('data-target');
-      
-      // Update active tab
-      document.querySelectorAll('.location-form__tabs--link').forEach(t => {
-        t.classList.remove('active');
-      });
+      document.querySelectorAll('.location-form__tabs--link').forEach(t => t.classList.remove('active'));
       this.classList.add('active');
-      
-      // Show target content
-      document.querySelectorAll('.location-form__content > div').forEach(content => {
-        content.classList.remove('active');
-      });
+      document.querySelectorAll('.location-form__content > div').forEach(content => content.classList.remove('active'));
       document.querySelector(target).classList.add('active');
     });
   });
 
-  // Pickup date select - FIXED
+  // ---------- PICKUP TIME ----------
   document.querySelectorAll('.time .dropdown-item').forEach(item => {
     item.addEventListener('click', () => {
       document.querySelector('#time input').value = item.textContent;
@@ -1445,7 +1441,7 @@ if (backBtn) {
     });
   });
 
-  // Car select
+  // ---------- CAR SELECT ----------
   document.querySelectorAll('.size-of-car .car-item').forEach(item => {
     item.addEventListener('click', () => {
       const input = document.querySelector('#size-of-car input');
@@ -1456,139 +1452,253 @@ if (backBtn) {
     });
   });
 
-  // Show more cars on + click
-  document.getElementById('showMoreCars').addEventListener('click', () => {
-    document.getElementById('moreCars').classList.toggle('hidden-cars');
+  // Show more cars
+  const showMoreCarsBtn = document.getElementById('showMoreCars');
+  if (showMoreCarsBtn) {
+    showMoreCarsBtn.addEventListener('click', () => {
+      document.getElementById('moreCars').classList.toggle('hidden-cars');
+    });
+  }
+
+  // Add More Vehicles popup
+  const phonePopup = document.getElementById('phonePopup');
+  const addMoreVehiclesBtn = document.getElementById('addMoreVehicles');
+  if (addMoreVehiclesBtn) {
+    addMoreVehiclesBtn.addEventListener('click', e => {
+      e.preventDefault();
+      phonePopup.style.display = 'flex';
+    });
+  }
+
+  document.querySelectorAll('.close-popup').forEach(closeBtn => {
+    closeBtn.addEventListener('click', () => phonePopup.style.display = 'none');
   });
-});
 
+  if (phonePopup) {
+    phonePopup.addEventListener('click', e => { if (e.target === phonePopup) phonePopup.style.display = 'none'; });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') phonePopup.style.display = 'none'; });
+  }
 
-// Show popup when clicking "Add More Vehicles"
-        document.getElementById('addMoreVehicles').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('phonePopup').style.display = 'flex';
-        });
-
-        // Close popup when clicking the close button
-        document.querySelector('.close-popup').addEventListener('click', function() {
-            document.getElementById('phonePopup').style.display = 'none';
-        });
-
-        // Close popup if user clicks outside the box
-        document.getElementById('phonePopup').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.style.display = 'none';
-            }
-        });
-        
-        // Close popup with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                document.getElementById('phonePopup').style.display = 'none';
-            }
-        });
-
-
-// last two btns
-document.addEventListener('DOMContentLoaded', function() {
+  // ---------- DEALER TOGGLE ----------
   const checkbox = document.getElementById('isDealer');
   const dealerBtn = document.getElementById('dealer-btn');
   const btnContainer = document.getElementById('buttonContainer');
 
-  // ✅ On load — ensure correct state
-  if (checkbox.checked) {
-    dealerBtn.classList.remove('hidden');
-    btnContainer.classList.add('show-dealer');
-  } else {
-    dealerBtn.classList.add('hidden');
-    btnContainer.classList.remove('show-dealer');
-  }
-
-  // ✅ Toggle on change
-  checkbox.addEventListener('change', function() {
-    if (this.checked) {
+  function updateDealerUI() {
+    if (checkbox.checked) {
       dealerBtn.classList.remove('hidden');
       btnContainer.classList.add('show-dealer');
     } else {
       dealerBtn.classList.add('hidden');
       btnContainer.classList.remove('show-dealer');
     }
+  }
+  if (checkbox) {
+    updateDealerUI();
+    checkbox.addEventListener('change', updateDealerUI);
+  }
+
+ 
+
+  // ---------- SUMMARY ELEMENTS ----------
+  const summaryVehicle = document.getElementById('summary-vehicle');
+  const summaryPickup = document.getElementById('summary-pickup');
+  const summaryDropoff = document.getElementById('summary-dropoff');
+  const summaryDate = document.getElementById('summary-date');
+
+  const pickupInput = document.getElementById('pickup');
+  const deliveryInput = document.getElementById('delivery');
+  const vehicleMake = document.getElementById('vehicle-make');
+  const vehicleModel = document.getElementById('vehicle-model');
+  const vehicleYear = document.getElementById('vehicle-year');
+
+  // ---------- HELPER: LIST CLICK ----------
+  function setSummaryFromList(input, summaryEl, listId) {
+    const listItems = document.getElementById(listId).querySelectorAll('.item');
+    listItems.forEach(item => {
+      item.addEventListener('click', () => {
+        input.value = item.textContent;
+        summaryEl.textContent = item.textContent;
+      });
+    });
+  }
+
+  setSummaryFromList(pickupInput, summaryPickup, 'pickup-list');
+  setSummaryFromList(deliveryInput, summaryDropoff, 'delivery-list');
+
+  // ---------- INPUT EVENT: MANUAL TYPING ----------
+  pickupInput.addEventListener('input', () => {
+    summaryPickup.textContent = pickupInput.value || 'Select pickup';
   });
+
+  deliveryInput.addEventListener('input', () => {
+    summaryDropoff.textContent = deliveryInput.value || 'Select dropoff';
+  });
+
+  // ---------- GOOGLE AUTOCOMPLETE ----------
+  if (typeof google !== 'undefined') {
+    const pickupAutocomplete = new google.maps.places.Autocomplete(pickupInput, {
+      types: ['(cities)']
+    });
+    const deliveryAutocomplete = new google.maps.places.Autocomplete(deliveryInput, {
+      types: ['(cities)']
+    });
+
+    pickupAutocomplete.addListener('place_changed', () => {
+      const place = pickupAutocomplete.getPlace();
+      if (place && place.formatted_address) {
+        pickupInput.value = place.formatted_address;
+        summaryPickup.textContent = place.formatted_address;
+      }
+    });
+
+    deliveryAutocomplete.addListener('place_changed', () => {
+      const place = deliveryAutocomplete.getPlace();
+      if (place && place.formatted_address) {
+        deliveryInput.value = place.formatted_address;
+        summaryDropoff.textContent = place.formatted_address;
+      }
+    });
+  }
+
+  // ---------- VEHICLE SUMMARY ----------
+  function updateVehicleSummary() {
+    const make = vehicleMake.value;
+    const model = vehicleModel.value;
+    const year = vehicleYear.value;
+    summaryVehicle.textContent =
+      `${year ? year + ' ' : ''}${make ? make.charAt(0).toUpperCase() + make.slice(1) : ''}${model ? ' ' + model : ''}`.trim() || 'Select vehicle';
+  }
+  if (vehicleMake) vehicleMake.addEventListener('change', updateVehicleSummary);
+  if (vehicleModel) vehicleModel.addEventListener('input', updateVehicleSummary);
+  if (vehicleYear) vehicleYear.addEventListener('change', updateVehicleSummary);
+
+  // ---------- PICKUP DATE SUMMARY ----------
+  document.querySelectorAll('.time .dropdown-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (summaryDate) summaryDate.textContent = item.textContent;
+      document.querySelector('.time input').value = item.textContent;
+    });
+  });
+
 });
 
 
-document.addEventListener('DOMContentLoaded', () => {
+// ==========================
+// DISTANCE CALCULATION (NO API KEY)
+// ==========================
 
-    const summaryVehicle = document.getElementById('summary-vehicle');
-    const summaryPickup = document.getElementById('summary-pickup');
-    const summaryDropoff = document.getElementById('summary-dropoff');
-    const summaryDate = document.getElementById('summary-date');
+// Helper: Convert meters to miles
+function metersToMiles(meters) {
+  return (meters / 1609.34).toFixed(1);
+}
 
-    const pickupInput = document.getElementById('pickup');
-    const deliveryInput = document.getElementById('delivery');
-    const vehicleMake = document.getElementById('vehicle-make');
-    const vehicleModel = document.getElementById('vehicle-model');
-    const vehicleYear = document.getElementById('vehicle-year');
+// Get coordinates using Nominatim
+async function getCoordinates(address) {
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  if (data.length > 0) {
+    return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+  }
+  return null;
+}
 
-    // Pickup Date dropdown
-    const pickupDropdownItems = document.querySelectorAll('.time .dropdown-item');
+// Get distance from OSRM API
+async function getDistance(pickup, dropoff) {
+  const url = `https://router.project-osrm.org/route/v1/driving/${pickup.lon},${pickup.lat};${dropoff.lon},${dropoff.lat}?overview=false`;
+  const res = await fetch(url);
+  const data = await res.json();
+  if (data && data.routes && data.routes.length > 0) {
+    return data.routes[0].distance; // in meters
+  }
+  return null;
+}
 
-    // ----------------- PICKUP & DELIVERY -----------------
-    function setSummaryFromAutocomplete(input, summaryEl) {
-        // Listen for Google Places or autocomplete selection
-        input.addEventListener('place_changed', () => {
-            const place = input.getPlace ? input.getPlace() : null;
-            if(place && place.formatted_address) {
-                summaryEl.textContent = place.formatted_address;
-            } else if(input.value) {
-                summaryEl.textContent = input.value; // fallback
-            }
-        });
+// Combine everything
+async function calculateMiles() {
+  const pickupAddress = document.getElementById('pickup').value;
+  const deliveryAddress = document.getElementById('delivery').value;
 
-        // If autocomplete not firing, fallback to blur
-        input.addEventListener('blur', () => {
-            if(input.value) summaryEl.textContent = input.value;
-        });
-    }
+  if (!pickupAddress || !deliveryAddress) return;
 
-    // If you are using custom list dropdown
-    function setSummaryFromList(input, summaryEl, listId) {
-        const listItems = document.getElementById(listId).querySelectorAll('.list-group-item');
-        listItems.forEach(item => {
-            item.addEventListener('click', () => {
-                summaryEl.textContent = item.textContent;
-            });
-        });
-    }
+  // Get lat/lon for both
+  const pickup = await getCoordinates(pickupAddress);
+  const dropoff = await getCoordinates(deliveryAddress);
 
-    setSummaryFromList(pickupInput, summaryPickup, 'pickup-list');
-    setSummaryFromList(deliveryInput, summaryDropoff, 'delivery-list');
+  if (!pickup || !dropoff) {
+    alert("Couldn't find route for given addresses.");
+    return;
+  }
 
-    // ----------------- VEHICLE SUMMARY -----------------
-    function updateVehicleSummary() {
-        const make = vehicleMake.value;
-        const model = vehicleModel.value;
-        const year = vehicleYear.value;
-        summaryVehicle.textContent = 
-            `${year ? year + ' ' : ''}${make ? make.charAt(0).toUpperCase() + make.slice(1) : ''}${model ? ' ' + model : ''}`.trim() || 'Select vehicle';
-    }
+  // Store coordinates (optional)
+  document.getElementById('pickup-lat').value = pickup.lat;
+  document.getElementById('pickup-lon').value = pickup.lon;
+  document.getElementById('delivery-lat').value = dropoff.lat;
+  document.getElementById('delivery-lon').value = dropoff.lon;
 
-    vehicleMake.addEventListener('change', updateVehicleSummary);
-    vehicleModel.addEventListener('input', updateVehicleSummary);
-    vehicleYear.addEventListener('change', updateVehicleSummary);
+  // Get route distance
+  const distanceMeters = await getDistance(pickup, dropoff);
+  if (!distanceMeters) {
+    alert("Route not found.");
+    return;
+  }
 
-    // ----------------- PICKUP DATE -----------------
-    pickupDropdownItems.forEach(item => {
-        item.addEventListener('click', () => {
-            summaryDate.textContent = item.textContent;
-            document.querySelector('.time input').value = item.textContent;
-        });
-    });
+  // Convert to miles
+  const miles = metersToMiles(distanceMeters);
+  console.log(`Distance: ${miles} miles`);
 
+  // Show on page (you can customize this)
+  const summaryEl = document.getElementById('summary-distance');
+  if (summaryEl) {
+    summaryEl.textContent = `${miles} miles`;
+  } else {
+    alert(`Distance: ${miles} miles`);
+  }
+}
+
+// Run calculation automatically when both fields filled
+document.getElementById('delivery').addEventListener('change', calculateMiles);
+
+// pricing page
+document.getElementById('continue-btn').addEventListener('click', function(e) {
+  e.preventDefault();
+
+  const pickupLat = document.getElementById('pickup-lat').value;
+  const pickupLon = document.getElementById('pickup-lon').value;
+  const deliveryLat = document.getElementById('delivery-lat').value;
+  const deliveryLon = document.getElementById('delivery-lon').value;
+
+  if (!pickupLat || !pickupLon || !deliveryLat || !deliveryLon) {
+    alert("Please select both pickup and delivery locations from suggestions.");
+    return;
+  }
+
+  // Call OSRM API to get distance
+  const url = `https://router.project-osrm.org/route/v1/driving/${pickupLon},${pickupLat};${deliveryLon},${deliveryLat}?overview=false`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      if (data.routes && data.routes.length > 0) {
+        const meters = data.routes[0].distance;
+        const miles = (meters / 1609.34).toFixed(2);
+
+        // Save miles for pricing page
+        localStorage.setItem('tripMiles', miles);
+
+        // Redirect to pricing page
+        window.location.href = "pricing.html";
+      } else {
+        alert("Could not calculate route distance.");
+      }
+    })
+    .catch(() => alert("Error fetching route data. Try again."));
 });
 
 
 </script>
+
 
 </body>
 </html>

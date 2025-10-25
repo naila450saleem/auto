@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing | Auto Transport Quote</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f7f8fa;
+    color: #222;
+  }
+
+  header {
+    background: #0d6efd;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 50px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .pricing-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    width: 300px;
+    padding: 30px;
+    text-align: center;
+    transition: 0.3s ease;
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .plan-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 15px;
+  }
+
+  .distance {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #444;
+  }
+
+  .price {
+    font-size: 36px;
+    font-weight: 700;
+    color: #28a745;
+    margin: 10px 0 20px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px;
+    color: #666;
+    font-size: 15px;
+  }
+
+  ul li {
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .btn {
+    display: inline-block;
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s;
+  }
+
+  .btn:hover {
+    background: #0b5ed7;
+  }
+
+  .back-btn {
+    display: block;
+    margin: 40px auto 0;
+    background: #6c757d;
+  }
+
+  .back-btn:hover {
+    background: #5a6268;
+  }
+
+  @media (max-width: 768px) {
+    .pricing-card {
+      width: 85%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>Pricing Summary</header>
+
+<div class="container">
+  <div class="pricing-card" id="economy">
+    <div class="plan-name">Economy</div>
+    <div class="distance">Distance: <span class="miles">--</span> miles</div>
+    <div class="price">$--</div>
+    <ul>
+      <li>Standard open carrier</li>
+      <li>Delivery within 7-10 days</li>
+      <li>Insurance included</li>
+    </ul>
+    <button class="btn">Book Economy</button>
+  </div>
+
+  <div class="pricing-card" id="standard">
+    <div class="plan-name">Standard</div>
+    <div class="distance">Distance: <span class="miles">--</span> miles</div>
+    <div class="price">$--</div>
+    <ul>
+      <li>Faster pickup (2-3 days)</li>
+      <li>Priority transport</li>
+      <li>Full tracking access</li>
+    </ul>
+    <button class="btn">Book Standard</button>
+  </div>
+
+  <div class="pricing-card" id="enclosed">
+    <div class="plan-name">Enclosed</div>
+    <div class="distance">Distance: <span class="miles">--</span> miles</div>
+    <div class="price">$--</div>
+    <ul>
+      <li>Enclosed carrier</li>
+      <li>Premium insurance</li>
+      <li>Luxury / classic vehicles</li>
+    </ul>
+    <button class="btn">Book Enclosed</button>
+  </div>
+</div>
+
+<button class="btn back-btn" onclick="goBack()">← Go Back</button>
+
+<script>
+  // Fetch miles from localStorage
+  const miles = parseFloat(localStorage.getItem('tripMiles')) || 0;
+
+  const plans = [
+    { id: 'economy', rate: 1.00 },
+    { id: 'standard', rate: 1.25 },
+    { id: 'enclosed', rate: 1.65 }
+  ];
+
+  plans.forEach(plan => {
+    const card = document.getElementById(plan.id);
+    const milesElem = card.querySelector('.miles');
+    const priceElem = card.querySelector('.price');
+
+    if (miles > 0) {
+      milesElem.textContent = miles.toFixed(2);
+      const total = (miles * plan.rate).toFixed(2);
+      priceElem.textContent = `$${total}`;
+    } else {
+      milesElem.textContent = "N/A";
+      priceElem.textContent = "$0.00";
+    }
+  });
+
+  function goBack() {
+    window.location.href = "index.html"; // adjust if needed
+  }
+</script>
+
+</body>
+</html>
