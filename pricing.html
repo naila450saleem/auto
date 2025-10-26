@@ -22,15 +22,166 @@
     letter-spacing: 1px;
   }
 
-  .container {
-    max-width: 1000px;
-    margin: 50px auto;
+  /* ---------- MAIN CONTAINER ---------- */
+  .main-layout {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 25px;
+    align-items: flex-start;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 50px auto;
+    flex-wrap: nowrap;
   }
 
+  /* ---------- LEFT SIDE: PRICE OPTIONS ---------- */
+  .price-options {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    flex: 0 0 25%; /* smaller width (35%) */
+    margin-left: 10%;
+  }
+
+  .price-option {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .price-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .price-option h3 {
+    color: #0d6efd;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+
+  .price-amount {
+    font-size: 32px;
+    font-weight: 700;
+    color: #28a745;
+    margin: 10px 0;
+  }
+
+  .price-description {
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    font-size: 14px;
+  }
+
+  .book-online-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.book-btn {
+  display: inline-block;
+  background-color: transparent;
+  color: #000;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: 2px solid #0b5ed7;
+}
+
+.book-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.book-phone {
+  margin-top: 8px;
+  color: #333;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.book-phone:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+
+  /* ---------- RIGHT SIDE: SUMMARY ---------- */
+  .summary-section {
+    flex: 1 1 60%; /* larger width for summary card */
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin-right: 10%;
+  }
+
+  .summary-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 27px;
+    text-align: center;
+    padding-top: 22px;
+  }
+
+  .summary-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .summary-item {
+    background: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+    border-radius: 8px;
+    padding: 15px;
+  }
+
+  .summary-label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+
+  .summary-value {
+    color: #222;
+    font-weight: 500;
+  }
+
+  .total-price {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
+
+  .total-price-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 10px;
+  }
+
+  .total-price-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: #28a745;
+  }
+
+  /* ---------- BUTTON ---------- */
   .btn {
     display: inline-block;
     background: #0d6efd;
@@ -49,238 +200,107 @@
 
   .back-btn {
     display: block;
-    margin: 40px auto 0;
+    margin: 40px auto 60px;
     background: #b6f87c;
     color: #000;
-    margin-bottom: 30px;
     font-weight: bold;
     width: 70%;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px 0;
   }
 
   .back-btn:hover {
-    background: #5a6268;
+    background: #a4eb67;
   }
 
-  /* Price Options Section */
-.price-options {
-  display: flex !important;        /* 🔥 force flex layout */
-  flex-direction: row !important;  /* side by side */
-  justify-content: center;
-  align-items: stretch;
-  gap: 30px;
-  flex-wrap: nowrap;               /* don’t wrap to next line */
-  max-width: 1000px;
-  margin: 40px auto;
-  background: none;                /* remove background if still wrapping both */
-  box-shadow: none;                /* remove outer shadow */
-  border-radius: 0;
-  padding: 0;
-}
-
-.price-option {
-  flex: 1 1 45%;                   /* two boxes side by side */
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-  padding: 30px;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.price-option:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-.price-option h3 {
-  color: #0d6efd;
-  margin-bottom: 10px;
-  font-size: 22px;
-}
-
-.price-amount {
-  font-size: 36px;
-  font-weight: 700;
-  color: #28a745;
-  margin: 10px 0;
-}
-
-.price-description {
-  color: #666;
-  margin-bottom: 15px;
-  line-height: 1.5;
-}
-
-.book-online {
-  color: #0d6efd;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 16px;
-}
-
-.book-online:hover {
-  text-decoration: underline;
-}
-
-/* mobile view only */
-@media (max-width: 768px) {
-  .price-options {
-    flex-direction: column !important; /* stack on small screens */
-  }
-}
-
-
-
-  /* Summary Section Styles */
-  .summary-section {
-    max-width: 1000px;
-    margin: 30px auto;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-    padding: 30px;
-  }
-
-  .summary-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #0d6efd;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .summary-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-  }
-
-  .summary-item {
-    margin-bottom: 15px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border-left: 4px solid #0d6efd;
-  }
-
-  .summary-label {
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 5px;
-    font-size: 14px;
-  }
-
-  .summary-value {
-    color: #222;
-    font-weight: 500;
-  }
-
-  .total-price {
-    text-align: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-  }
-
-  .total-price-label {
-    font-size: 18px;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 10px;
-  }
-
-  .total-price-value {
-    font-size: 36px;
-    font-weight: 700;
-    color: #28a745;
-  }
-
-  @media (max-width: 768px) {
-    .summary-section,
-    .price-options {
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px) {
+    .main-layout {
+      flex-direction: column;
+      align-items: stretch;
       margin: 20px;
-      padding: 20px;
+    }
+
+    .price-options,
+    .summary-section {
+      flex: 1 1 100%;
     }
   }
-
- 
-
 </style>
 </head>
 <body>
 
 <header>Pricing Summary</header>
 
-<!-- Price Options Section - Only 2 Options -->
-<div class="price-options">
-  <!-- Standard Price -->
-  <div class="price-option">
-    <h3>Standard Price</h3>
-    <div class="price-amount" id="standard-price">$0</div>
-    <div class="price-description">
-      A one-time full payment will be charged to your credit or debit card once a trusted car carrier is assigned to your order.
-    </div>
-    <a href="tel:224-218-2949" class="book-online">Book Online: 224-218-2949</a>
-  </div>
-
-  <!-- Divider -->
-  <hr style="border: none; border-top: 2px dashed #eee; margin: 30px 0;">
-
-  <!-- Discounted Cash Price -->
-  <div class="price-option">
-    <h3>Discounted Cash Price</h3>
-    <div class="price-amount" id="cash-price">$0</div>
-    <div class="price-description">
-      Deposit will be charged once a trucker is assigned for pickup. The balance can be paid upon delivery directly to the trucker in cash, cashier's check, certified funds.
-    </div>
-    <a href="tel:224-218-2949" class="book-online">Book Online: 224-218-2949</a>
-  </div>
+<!-- ✅ Combined layout -->
+<div class="main-layout">
+  <!-- Left Side -->
+  <div class="price-options">
+    <div class="price-option">
+      <h3>Standard Price</h3>
+      <div class="price-amount" id="standard-price">$0</div>
+      <div class="price-description">
+        A one-time full payment will be charged to your credit or debit card once a trusted car carrier is assigned to your order.
+      </div>
+      <div class="book-online-box">
+  <a href="https://yourbookinglink.com" class="book-btn">Book Online</a>
+  <a href="tel:224-218-2949" class="book-phone">224-218-2949</a>
 </div>
 
-<!-- Summary Section -->
-<div class="summary-section">
-  <div class="summary-title">Summary of the Quote</div>
-  
-  <div class="summary-details">
-    <!-- Vehicle -->
-    <div class="summary-item">
-      <div class="summary-label">Vehicle</div>
-      <div class="summary-value" id="summary-vehicle">Small Car</div>
-      <div class="summary-value" id="summary-condition">
-        <span style="color: #28a745;">●</span> Operable  
-        <span style="color: #ccc;">○</span> Inoperable (+$150)
+    </div>
+
+    <div class="price-option">
+      <h3>Discounted Cash Price</h3>
+      <div class="price-amount" id="cash-price">$0</div>
+      <div class="price-description">
+        Deposit will be charged once a trucker is assigned for pickup. The balance can be paid upon delivery directly to the trucker in cash, cashier's check, certified funds.
       </div>
-    </div>
-    
-    <!-- Carrier -->
-    <div class="summary-item">
-      <div class="summary-label">Preferred Carrier</div>
-      <div class="summary-value" id="summary-carrier">Open</div>
-    </div>
-    
-    <!-- Route -->
-    <div class="summary-item">
-      <div class="summary-label">Route</div>
-      <div class="summary-value" id="summary-route">
-        From: <span id="summary-pickup">--</span><br>
-        To: <span id="summary-delivery">--</span><br>
-        Date: <span id="summary-date">7DAYS</span>
-      </div>
-    </div>
-    
-    <!-- Shipping Plan -->
-    <div class="summary-item">
-      <div class="summary-label">Shipping Plan</div>
-      <div class="summary-value" id="summary-plan">Standard Price: $0</div>
+      <div class="book-online-box">
+  <a href="https://yourbookinglink.com" class="book-btn">Book Online</a>
+  <a href="tel:224-218-2949" class="book-phone">224-218-2949</a>
+</div>
+
     </div>
   </div>
-  
-  <div class="total-price">
-    <div class="total-price-label">Total Shipment Price</div>
-    <div class="total-price-value" id="total-price">$0</div>
-    <p>No payment required until your pickup is scheduled.</p>
+
+  <!-- Right Side -->
+  <div class="summary-section">
+    <div class="summary-title">Summary of the Quote</div>
+
+    <div class="summary-details">
+      <div class="summary-item">
+        <div class="summary-label">Vehicle</div>
+        <div class="summary-value" id="summary-vehicle">Small Car</div>
+        <div class="summary-value" id="summary-condition">
+          <span style="color: #28a745;">●</span> Operable  
+          <span style="color: #ccc;">○</span> Inoperable (+$150)
+        </div>
+      </div>
+
+      <div class="summary-item">
+        <div class="summary-label">Preferred Carrier</div>
+        <div class="summary-value" id="summary-carrier">Open</div>
+      </div>
+
+      <div class="summary-item">
+        <div class="summary-label">Route</div>
+        <div class="summary-value" id="summary-route">
+          From: <span id="summary-pickup">--</span><br>
+          To: <span id="summary-delivery">--</span><br>
+          Date: <span id="summary-date">7DAYS</span>
+        </div>
+      </div>
+
+      <div class="summary-item">
+        <div class="summary-label">Shipping Plan</div>
+        <div class="summary-value" id="summary-plan">Standard Price: $0</div>
+      </div>
+    </div>
+
+    <div class="total-price">
+      <div class="total-price-label">Total Shipment Price</div>
+      <div class="total-price-value" id="total-price">$0</div>
+      <p>No payment required until your pickup is scheduled.</p>
+    </div>
   </div>
 </div>
 
@@ -333,7 +353,7 @@
 
   // Format vehicle for display
   function formatVehicle() {
-    const vehicle = `${vehicleYear} ${vehicleMake} ${vehicleModel}`.trim();
+    const vehicle = ` ${vehicleMake} `.trim();
     return vehicle || 'Small Car';
   }
 

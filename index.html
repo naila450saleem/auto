@@ -456,24 +456,74 @@ body {
 }
 
 .confirmation-right {
-  flex: 0 0 260px;
+  flex: 0 0 300px;
   background: #f7f8fc;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  font-family: 'Poppins', sans-serif;
 }
 
 .summary-box h3 {
   color: #09265e;
-  margin-bottom: 15px;
-  font-size: 20px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 700;
+  border-bottom: 1px solid #e5e8f0;
+  padding-bottom: 10px;
 }
 
-.summary-item {
-  margin-bottom: 12px;
-  font-size: 15px;
-  color: #333;
+.summary-section {
+  margin-bottom: 15px;
 }
+
+.summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.summary-icon {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+.summary-title {
+  font-weight: 600;
+  color: #09265e;
+  font-size: 16px;
+  flex-grow: 1;
+}
+
+.edit-btn {
+  background: #eef1f8;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 13px;
+  color: #09265e;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.edit-btn:hover {
+  background: #dfe4f0;
+}
+
+.summary-body {
+  padding-left: 24px;
+  color: #333;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #eaeaea;
+  margin: 12px 0;
+}
+
 
 .checkbox-group {
   display: flex;
@@ -1130,21 +1180,38 @@ body {
 
     <!-- RIGHT SIDE (SUMMARY) -->
     <div class="confirmation-right">
-      <div class="summary-box">
-        <h3>Summary of the Quote</h3>
-        <div class="summary-item">
-          <strong>Vehicle:</strong> <span id="summary-vehicle">sedan midsize</span>
-        </div>
-        <div class="summary-item">
-          <strong>Route:</strong><br>
-          From: <span id="summary-pickup">Seattle, WA</span><br>
-          To: <span id="summary-dropoff">Dallas, TX</span>
-        </div>
-        <div class="summary-item">
-          <strong>Date:</strong> <span id="summary-date">Within 7 days</span>
-        </div>
+  <div class="summary-box">
+    <h3>Summary of the Quote</h3>
+
+    <!-- Vehicle Section -->
+    <div class="summary-section">
+      <div class="summary-header">
+        <span class="summary-icon">🚗</span>
+        <span class="summary-title">Vehicle</span>
+        <button class="edit-btn">Edit ✏️</button>
+      </div>
+      <div class="summary-body">
+        <div id="summary-vehicle">Sedan Midsize</div>
       </div>
     </div>
+
+    <hr>
+
+    <!-- Route Section -->
+    <div class="summary-section">
+      <div class="summary-header">
+        <span class="summary-icon">📍</span>
+        <span class="summary-title">Route</span>
+      </div>
+      <div class="summary-body">
+        <div>From: <strong id="summary-pickup">Seattle, WA</strong></div>
+        <div>To: <strong id="summary-dropoff">Dallas, TX</strong></div>
+        <div>Date: <strong id="summary-date">Within 7 days</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
   </div>
 </div>
 
@@ -1333,11 +1400,26 @@ function setupNominatim(inputId, listId, confirmFieldId) {
         div.className = 'item';
         div.innerHTML = `<strong>${city || place.display_name.split(',')[0]}</strong>, ${state}${zip ? ' <span class="zip-code">' + zip + '</span>' : ''}`;
         div.onclick = () => {
-          input.value = label;
-          list.style.display = 'none';
-          const confirmEl = document.getElementById(confirmFieldId);
-          if (confirmEl) confirmEl.value = label;
-        };
+  input.value = label;
+  list.style.display = 'none';
+  
+  // Save selected location
+  const confirmEl = document.getElementById(confirmFieldId);
+  if (confirmEl) confirmEl.value = label;
+  
+  // 🔹 Update summary instantly
+  if (inputId === 'pickup') {
+    const summaryPickup = document.getElementById('summary-pickup');
+    if (summaryPickup) summaryPickup.textContent = label;
+  } else if (inputId === 'delivery') {
+    const summaryDropoff = document.getElementById('summary-dropoff');
+    if (summaryDropoff) summaryDropoff.textContent = label;
+  }
+
+  // 🔹 Save to localStorage immediately
+  saveFormData();
+};
+
         list.appendChild(div);
       });
       list.style.display = 'block';
