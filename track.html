@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track a Shipment</title>
+
+  <!-- ====== STYLES ====== -->
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f5f8ff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: flex;
+      background: #eef2ff;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      font-weight: 600;
+      color: #1d3b6f;
+      text-decoration: none;
+    }
+
+    .tab.active {
+      background: #fff;
+      border-bottom: 3px solid #4caf50;
+    }
+
+    .form-container {
+      padding: 30px;
+    }
+
+    h2 {
+      color: #1d3b6f;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      color: #1d3b6f;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d9ff;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #4caf50;
+      box-shadow: 0 0 4px #4caf504d;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: #c5ff91;
+      color: #1d3b6f;
+      font-size: 17px;
+      font-weight: 600;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: #b7ff70;
+    }
+
+    .g-recaptcha {
+      margin-top: 10px;
+    }
+
+
+.g-recaptcha {
+  transform-origin: 0 0;
+}
+
+@media (max-width: 400px) {
+  .g-recaptcha {
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 320px) {
+  .g-recaptcha {
+    transform: scale(0.75);
+  }
+}
+
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="tabs">
+      <a href="index.html" class="tab">🚚 Calculate Shipping</a>
+      <a href="#" class="tab active">📍 Track a Shipment</a>
+    </div>
+
+    <div class="form-container">
+      <h2>Order Details</h2>
+
+      <form id="trackForm">
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" placeholder="Your E-mail Address" required>
+  </div>
+
+  <div class="form-group">
+    <label for="order">Order Detail</label>
+    <input type="text" id="order" name="order" placeholder="Your name or order number" required>
+  </div>
+
+  <div class="form-group">
+    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+  </div>
+
+  <button type="submit" class="submit-btn">Track Shipment</button>
+</form>
+
+    </div>
+  </div>
+
+  <!-- ====== SCRIPTS ====== -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script>
+    // Initialize EmailJS
+    emailjs.init("9xcmQmNrpysoLipQc"); // Replace with your EmailJS Public Key
+
+    document.getElementById("trackForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      if (!grecaptcha.getResponse()) {
+        alert("Please verify you are not a robot.");
+        return;
+      }
+
+      const templateParams = {
+        email: document.getElementById("email").value,
+        order: document.getElementById("order").value,
+      };
+
+      emailjs.send("service_blm8kta", "template_z6v0dn9", templateParams)
+      .then(() => {
+        alert("✅ Your tracking request has been sent successfully!");
+        document.getElementById("trackForm").reset();
+        grecaptcha.reset();
+      })
+      .catch(err => alert("❌ Error sending request: " + err));
+    });
+
+// Invisible reCAPTCHA callback
+  function onSubmit(token) {
+    document.getElementById("trackForm").dispatchEvent(new Event("submit"));
+  }
+
+  </script>
+</body>
+</html>
