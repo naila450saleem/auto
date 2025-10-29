@@ -882,6 +882,23 @@ hr {
             }
         }
 
+#pickup-list, #delivery-list {
+    position: absolute;  /* dropdown input ke relative */
+    z-index: 9999;       /* upar dikhaye */
+    background: #fff;    /* white background */
+    border: 1px solid #ccc;
+    max-height: 200px;   /* scrollable */
+    overflow-y: auto;
+    width: 100%;         /* input ke width ke barabar */
+}
+.item {
+    padding: 8px;
+    cursor: pointer;
+}
+.item:hover {
+    background-color: #f0f0f0;
+}
+
        
     </style>
 </head>
@@ -1383,6 +1400,13 @@ function setupNominatim(inputId, listId, confirmFieldId) {
         return;
       }
 
+      list.style.position = 'absolute';
+list.style.top = input.offsetTop + input.offsetHeight + 'px';
+list.style.left = input.offsetLeft + 'px';
+list.style.width = input.offsetWidth + 'px';
+list.style.zIndex = 9999;  // sabse upar
+
+
       data.forEach(place => {
         const addr = place.address || {};
         const city = addr.city || addr.town || addr.village || addr.county || '';
@@ -1414,6 +1438,44 @@ function setupNominatim(inputId, listId, confirmFieldId) {
   // 🔹 Save to localStorage immediately
   saveFormData();
 };
+
+
+div.onclick = () => {
+  input.value = label;
+  list.style.display = 'none';
+  
+  const confirmEl = document.getElementById(confirmFieldId);
+  if (confirmEl) confirmEl.value = label;
+  
+  if (inputId === 'pickup') {
+    const summaryPickup = document.getElementById('summary-pickup');
+    if (summaryPickup) summaryPickup.textContent = label;
+  } else if (inputId === 'delivery') {
+    const summaryDropoff = document.getElementById('summary-dropoff');
+    if (summaryDropoff) summaryDropoff.textContent = label;
+  }
+
+  saveFormData();
+};
+
+// ✅ Add this just after div.onclick
+div.addEventListener('touchstart', () => {
+  input.value = label;
+  list.style.display = 'none';
+  
+  const confirmEl = document.getElementById(confirmFieldId);
+  if (confirmEl) confirmEl.value = label;
+
+  if (inputId === 'pickup') {
+      const summaryPickup = document.getElementById('summary-pickup');
+      if (summaryPickup) summaryPickup.textContent = label;
+  } else if (inputId === 'delivery') {
+      const summaryDropoff = document.getElementById('summary-dropoff');
+      if (summaryDropoff) summaryDropoff.textContent = label;
+  }
+
+  saveFormData();
+});
 
         list.appendChild(div);
       });
