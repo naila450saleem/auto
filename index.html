@@ -22,58 +22,123 @@ body {
     background-color: #fff;
     border-radius: 8px;
     padding: 30px;
+   
     max-width: 600px;
     margin: 0 auto;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: 10px;
 }
 
 /* Tabs Section */
 .location-form__tabs {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 25px;
-    border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: center;
+  background: #d1d4e6;
+  border-radius: 20px;
+  /* overflow: hidden; */
+  gap: 0;
+  margin-bottom: 25px;
 }
 
 .location-form__tabs--link {
-    padding: 15px 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    border-bottom: 3px solid transparent;
-    background-color: transparent;
-}
-
-.location-form__tabs--link.active {
-    border-bottom: 3px solid #0066cc;
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .form-tab {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  padding: 8px 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #5a607f; /* default grey text */
+  background-color: #d1d4e6; /* default light grey */
+  transition: all 0.3s ease;
 }
 
+.location-form__tabs--link.active .form-tab {
+  background-color: #581eff; /* blue */
+  color: #ffffff; /* white text */
+}
+
+.location-form__tabs--link:not(.active) .form-tab:hover {
+  background-color: #d9deef; /* light hover */
+}
+
+
 .form-tab p {
-    font-weight: bold;
-    color: #333;
+    font-weight: 400;
+    color: white;
+    margin: 0;
+    text-decoration: none !important;
+    font-size: 14px;
+}
+
+a.location-form__tabs--link {
+    text-decoration: none !important;
+}
+
+/* 🔹 Active tab (blue background + white text) */
+.location-form__tabs--link.active .form-tab {
+  background-color: #581eff;
+  color: #ffffff;
+}
+
+/* 🔹 Route tab — rounded on BOTH sides */
+.location-form__tabs--link:first-child .form-tab {
+  border-radius: 10px; /* 👈 both left & right corners */
+}
+
+/* 🔹 Contact tab — square edges */
+.location-form__tabs--link:last-child .form-tab {
+  border-radius: 10px;
+}
+
+/* 🔹 Optional hover effect */
+.location-form__tabs--link:not(.active) .form-tab:hover {
+  background-color: #d9deef;
+}
+
+
+/* Tab icons styling */
+.form-tab img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+/* Remove underline from all tab links */
+a.location-form__tabs--link {
+    text-decoration: none !important;
 }
 
 /* Titles and Section Headings */
 .title-text {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 25px;
-    color: #09265e;
+    margin-bottom: 4px;
+    color: #581eff;
 }
+
+.subtitle-text {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #555e8c;         /* soft gray-blue */
+  text-align: left;     /* match title alignment */
+  margin-top: 5px;
+  margin-bottom: 25px;
+  letter-spacing: 0.3px;
+}
+
 
 .group-icon {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
-    color: #09265e;
+    color: #581eff;
     font-weight: bold;
 }
 
@@ -92,29 +157,41 @@ body {
 }
 
 .route-control {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    background-color: #fff;
-    color: #333;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc; /* Normal state — thin border */
+  border-radius: 12px;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background-color: #fff; /* white background */
 }
 
+/* When user clicks inside (focus) */
 .route-control:focus {
-    outline: none;
-    border-color: #0066cc;
-    box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+  border: 2.5px solid #6e5bff; /* Thicker border on focus */
+  box-shadow: 0 0 6px rgba(110, 91, 255, 0.25);
 }
+
+
+
 
 .text-add-car {
-    color: #0066cc;
+    color: #581eff;
     font-weight: bold;
     text-decoration: none;
     display: block;
     margin: 15px 0;
 }
+
+.form-group label {
+  display: block;
+  font-weight: 400;
+  color: #000;
+  margin-bottom: 10px; /* space between label & input */
+  font-size: 14px;
+}
+
 
 /* Dealer Section */
 .dealer-wrapper {
@@ -133,18 +210,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #b6f87c;
+  background: linear-gradient(135deg, #667eea 0%, #8a5fba 100%);
   padding: 2px 0;
   border-radius: 6px;
   transition: all 0.3s ease;
 }
 
+
 .btn {
   background: transparent;
   border: none;
-  color: #002b5c;
-  font-weight: 600;
-  padding: 14px 30px;
+  color: #fff;
+  padding: 8px 30px;
   width: 50%;
   cursor: pointer;
   text-align: center;
@@ -231,7 +308,7 @@ body {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 6px;
-    padding: 4px 10px;
+    padding: 0px 10px; 
     cursor: pointer;
     position: relative;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -264,7 +341,7 @@ body {
 }
 
 .dropdown-toggle:focus-within {
-    border-color: #0066cc;
+    border-color: #581eff;
     box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
 }
 
@@ -294,10 +371,76 @@ body {
     align-items: center;
     background-color: #fff;
     transition: background 0.2s ease;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    margin: 1px 0; /* Top-bottom 1px space */
 }
 
+/* Hover effect with rounded corners and 1px space */
 .dropdown-item:hover {
-    background-color: #f5f5f5;
+    background: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(280 85% 65%) 100%);
+    color: white;
+    border-radius: 4px;
+    margin: 1px 8px; /* Left-right 1px space */
+    width: calc(100% - 16px); /* Adjust width for spacing */
+}
+
+/* Selected/Active option with rounded corners and space */
+.dropdown-item.selected {
+    background: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(280 85% 65%) 100%);
+    color: white;
+    border-radius: 4px;
+    margin: 1px 8px; /* Left-right 1px space */
+    width: calc(100% - 16px); /* Adjust width for spacing */
+}
+
+/* Focus state */
+.dropdown-item:focus {
+    outline: none;
+    background: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(280 85% 65%) 100%);
+    color: white;
+    border-radius: 4px;
+    margin: 1px 8px;
+    width: calc(100% - 16px);
+}
+
+/* Remove border between items */
+.dropdown-item:not(:last-child) {
+    border-bottom: none;
+}
+
+/* First and last item radius adjustment */
+.dropdown-item:first-child:hover,
+.dropdown-item:first-child.selected,
+.dropdown-item:first-child:focus {
+    margin-top: 4px;
+}
+
+.dropdown-item:last-child:hover,
+.dropdown-item:last-child.selected,
+.dropdown-item:last-child:focus {
+    margin-bottom: 4px;
+}
+
+/* Scrollbar styling */
+.dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }
 
 .dropdown-item svg {
@@ -666,61 +809,111 @@ hr {
 .form-field label {
     display: block;
     margin-bottom: 8px;
-    font-weight: bold;
+    font-weight: 600;
     color: #333;
 }
 
-.form-field input, .form-field select {
+/* 🔹 Common styling for inputs and selects in form-field */
+.form-field input,
+.form-field select {
+  background-color: #f9f9ff; /* light blueish/white background */
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-.radio-group {
-    display: inline-flex;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    overflow: hidden; /* removes gap visually */
-}
-
-.radio-option {
-    flex: 0;
-}
-
-.radio-option input {
-    display: none;
-}
-
-.radio-option label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    border: 1px solid #ddd;
-    border-radius: none;
-    background-color: #fff;
-    cursor: pointer;
+    outline: none;
     transition: all 0.3s ease;
-    width: 100%;
-    text-align: center;
-    font-weight: normal;
-    margin-bottom: 0;
 }
 
-.radio-option input:checked + label {
-    border-color: #ddd;
-    background-color: #a9475b;
-    color: #fff;
-    font-weight: bold;
+/* 🔹 Focus state */
+.form-field input:focus,
+.form-field select:focus {
+border: 2.5px solid #6e5bff;
+    box-shadow: 0 0 6px rgba(110, 91, 255, 0.25);
+    background-color: #fff; /* optional: highlight bg on focus */
 }
 
-.radio-option label:hover {
-    border-color: #ddd;
+/* 🔹 Optional: Label spacing */
+.form-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
 }
+
+
+ .radio-group {
+            display: inline-flex;
+            margin-top: 5px;
+            gap: 20px;
+            background-color: #fff;
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-option input {
+            display: none;
+        }
+
+        /* Custom radio dot */
+       /* Outer circle */
+.radio-dot {
+    width: 15px;   /* outer circle size */
+    height: 15px;
+    border: 2px solid #581eff;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+/* Inner dot when checked — SMALLER */
+.radio-option input:checked + .radio-dot::after {
+    content: '';
+    width: 6px;    /* previously 8px, now smaller */
+    height: 6px;   /* previously 8px, now smaller */
+    background-color: #581eff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+        .radio-label {
+            color: #333;
+            font-weight: normal;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option input:checked ~ .radio-label {
+            color: #000;
+            
+        }
+
+        .radio-option:hover .radio-dot {
+            border-color: #581eff;
+        }
+
+        .radio-option:hover .radio-label {
+            color: #000;
+        }
+
+        /* Make entire radio option clickable */
+        .radio-option {
+            cursor: pointer;
+        }
 
 .promise-box {
     background-color: #f8f9fa;
@@ -905,32 +1098,28 @@ hr {
     background-color: #f0f0f0;
 }
 
-       
+ 
+
+
     </style>
 </head>
 <body>
     <div class="calculator calculator-wrapper">
         <div class="location-form">
+          <h2 class="title-text p-0 pb-2"> Auto Transport Quote</h2>
+          <h4 class="subtitle-text">Get an instant shipping quote in seconds</h4>
             <div class="location-form__tabs">
                 <div class="location-form__tabs--link active" data-target="#route">
                     <div class="form-tab">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                            <path d="M12.0586 11.5C11.3956 11.5 10.7597 11.2366 10.2908 10.7678C9.82199 10.2989 9.55859 9.66304 9.55859 9C9.55859 8.33696 9.82199 7.70107 10.2908 7.23223C10.7597 6.76339 11.3956 6.5 12.0586 6.5C12.7216 6.5 13.3575 6.76339 13.8264 7.23223C14.2952 7.70107 14.5586 8.33696 14.5586 9C14.5586 9.3283 14.4939 9.65339 14.3683 9.95671C14.2427 10.26 14.0585 10.5356 13.8264 10.7678C13.5942 10.9999 13.3186 11.1841 13.0153 11.3097C12.712 11.4353 12.3869 11.5 12.0586 11.5ZM12.0586 2C10.2021 2 8.4216 2.7375 7.10885 4.05025C5.79609 5.36301 5.05859 7.14348 5.05859 9C5.05859 14.25 12.0586 22 12.0586 22C12.0586 22 19.0586 14.25 19.0586 9C19.0586 7.14348 18.3211 5.36301 17.0083 4.05025C15.6956 2.7375 13.9151 2 12.0586 2Z" fill="#464C67"></path>
-                        </svg>
-                        <p>Calculate Shipping</p>
-                    </div>
+    <p>Route & Shipping</p>
+</div>
+
                 </div>
                 <a href="track.html" class="location-form__tabs--link">
   <div class="form-tab">
-    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-      <path d="M16.6533 7.9248H8.30292V10.7595H16.6533V7.9248Z" fill="#464C67"></path>
-      <path d="M10.804 11.3468H10.047V17.0528H10.804V11.3468Z" fill="#464C67"></path>
-      <path d="M12.2936 11.3468H11.5366V17.0528H12.2936V11.3468Z" fill="#464C67"></path>
-      <path d="M13.7077 11.3467H12.9508V17.0527H13.7077V11.3467Z" fill="#464C67"></path>
-      <path d="M15.2019 11.3468H14.445V17.0528H15.2019V11.3468Z" fill="#464C67"></path>
-    </svg>
-    <p>Track a Shipment</p>
-  </div>
+  <p>Contact</p>
+</div>
+
 </a>
 
             </div>
@@ -938,26 +1127,39 @@ hr {
             <div class="location-form__content">
                 <div class="route-form active" id="route">
                     <form class="select-route legacy active" id="quote-form">
-                        <h2 class="title-text p-0 pb-2">Calculate Your Auto Transport Cost</h2>
+                        <!-- <h2 class="title-text p-0 pb-2">Calculate Your Auto Transport Cost</h2> -->
                         
                         <div class="form-wrapper">
                             <div class="group-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                                    <path d="M12.0586 11.5C11.3956 11.5 10.7597 11.2366 10.2908 10.7678C9.82199 10.2989 9.55859 9.66304 9.55859 9C9.55859 8.33696 9.82199 7.70107 10.2908 7.23223C10.7597 6.76339 11.3956 6.5 12.0586 6.5C12.7216 6.5 13.3575 6.76339 13.8264 7.23223C14.2952 7.70107 14.5586 8.33696 14.5586 9C14.5586 9.3283 14.4939 9.65339 14.3683 9.95671C14.2427 10.26 14.0585 10.5356 13.8264 10.7678C13.5942 10.9999 13.3186 11.1841 13.0153 11.3097C12.712 11.4353 12.3869 11.5 12.0586 11.5ZM12.0586 2C10.2021 2 8.4216 2.7375 7.10885 4.05025C5.79609 5.36301 5.05859 7.14348 5.05859 9C5.05859 14.25 12.0586 22 12.0586 22C12.0586 22 19.0586 14.25 19.0586 9C19.0586 7.14348 18.3211 5.36301 17.0083 4.05025C15.6956 2.7375 13.9151 2 12.0586 2Z" fill="#464C67"></path>
-                                </svg>
                                 <span>Route</span>
                             </div>
                             <div class="form-group from mt-0">
-                                <input id="pickup" type="text" name="pickup" class="route-control"
-                                       placeholder="From (ZIP or City, State)" autocomplete="off" required tabindex="1">
-                                <div class="list-group" id="pickup-list"></div>
-                            </div>
+  <label for="pickup">From (ZIP or City, State)</label> 
+  <input id="pickup" 
+         type="text" 
+         name="pickup" 
+         class="route-control"
+         placeholder=" Enter pickup location" 
+         autocomplete="off" 
+         required 
+         tabindex="1">
+  <div class="list-group" id="pickup-list"></div>
+</div>
+
 
                             <div class="form-group to">
-                                <input id="delivery" type="text" name="delivery" class="route-control"
-                                       placeholder="To (ZIP or City, State)" autocomplete="off" required tabindex="2">
-                                <div class="list-group" id="delivery-list"></div>
-                            </div>
+  <label for="delivery">To (ZIP or City, State)</label>
+  <input id="delivery" 
+         type="text" 
+         name="delivery" 
+         class="route-control"
+         placeholder=" Enter delivery location" 
+         autocomplete="off" 
+         required 
+         tabindex="2">
+  <div class="list-group" id="delivery-list"></div>
+</div>
+
                         </div>
 
                         <!-- Hidden fields for coordinates -->
@@ -968,34 +1170,30 @@ hr {
 
                         
                         <div class="group-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                                <path d="M16.6533 7.9248H8.30292V10.7595H16.6533V7.9248Z" fill="#464C67"></path>
-                                <path d="M10.804 11.3468H10.047V17.0528H10.804V11.3468Z" fill="#464C67"></path>
-                                <path d="M12.2936 11.3468H11.5366V17.0528H12.2936V11.3468Z" fill="#464C67"></path>
-                                <path d="M13.7077 11.3467H12.9508V17.0527H13.7077V11.3467Z" fill="#464C67"></path>
-                                <path d="M15.2019 11.3468H14.445V17.0528H15.2019V11.3468Z" fill="#464C67"></path>
-                                <path d="M9.17037 17.0433H3.22132C3.22132 15.8797 3.17564 14.7398 3.25177 13.6064C3.27135 13.301 3.6607 13.0192 3.88039 12.7267C3.93912 12.7568 3.99567 12.787 4.0544 12.8171C4.0544 12.1675 4.0544 11.518 4.0544 10.8685C4.0544 9.68771 4.25234 9.48339 5.41823 9.44682C5.51611 9.44467 5.61399 9.42747 5.7532 9.41456V2.71925C5.48131 2.69344 5.22899 2.67193 4.94839 2.64612V1.0266C5.58571 1.0266 6.22956 0.947019 6.83425 1.06316C7.09745 1.11478 7.33671 1.54708 7.48245 1.85464C7.58251 2.06326 7.50202 2.35362 7.50202 2.64827H17.7514C17.7666 2.35577 17.7753 2.06541 17.797 1.77506C17.8318 1.34491 18.0689 1.05456 18.5018 1.0266C19.0934 0.987884 19.6872 1.01799 20.3115 1.01799V2.64182C20.0701 2.66548 19.8243 2.68913 19.535 2.71709V9.37585C19.5741 9.39951 19.6046 9.43392 19.6372 9.43607C21.1468 9.5178 21.1881 9.56081 21.1881 11.0793C21.1881 11.6514 21.1881 12.2213 21.1881 12.83C21.9233 12.9311 22.0582 13.4107 22.0408 14.0322C22.0147 15.0151 22.0342 16.0002 22.0342 17.0326H16.046C16.046 15.555 15.9503 14.0925 16.0765 12.6472C16.1787 11.4814 15.8155 10.8276 14.6931 10.4641C13.9644 10.2275 13.2901 9.56942 12.5919 9.56512C11.9154 9.56296 11.265 10.2405 10.5538 10.4749C9.44009 10.8427 9.04856 11.4836 9.16819 12.6536C9.29653 13.9053 9.19865 15.1786 9.19647 16.4432C9.19647 16.6347 9.18124 16.8282 9.17037 17.0498V17.0433ZM11.7501 7.77353V4.40114H7.50637C7.50637 5.24424 7.49332 6.04862 7.51073 6.85301C7.52378 7.45307 7.83047 7.75848 8.44387 7.76708C9.52057 7.78213 10.5973 7.77138 11.7479 7.77138L11.7501 7.77353ZM13.5294 7.75848C14.7127 7.75848 15.8655 7.78644 17.014 7.73482C17.2467 7.72406 17.6491 7.42941 17.6622 7.24229C17.7296 6.29596 17.6926 5.34317 17.6926 4.39684H13.5294V7.75848ZM19.1152 13.701C18.3865 13.6731 17.8079 14.2043 17.7883 14.9205C17.7709 15.6324 18.2712 16.1809 18.9716 16.2153C19.7133 16.2518 20.305 15.7399 20.3376 15.0366C20.3702 14.3312 19.8221 13.7311 19.1152 13.7032V13.701ZM6.23826 16.2153C6.94736 16.2024 7.5303 15.6066 7.50202 14.9205C7.47375 14.2495 6.89298 13.7032 6.21216 13.701C5.49653 13.701 4.91141 14.2774 4.92229 14.9743C4.93317 15.6797 5.51176 16.2282 6.23826 16.2153Z" fill="#464C67"></path>
-                                <path d="M21.9868 18.836C22.1282 19.991 22.039 20.1846 21.1842 20.5308C21.1842 21.0449 21.1885 21.5761 21.1842 22.1073C21.1776 22.6472 20.9101 22.9655 20.3511 22.9806C19.7725 22.9956 19.1939 22.9935 18.6153 22.9806C18.0867 22.9676 17.8105 22.6751 17.8018 22.1568C17.7909 21.6105 17.7996 21.0621 17.7996 20.4921H7.50244C7.50244 20.9739 7.51114 21.4557 7.50244 21.9396C7.48721 22.6988 7.22184 22.972 6.45836 22.9935C5.96025 23.0085 5.45997 22.9935 4.96185 22.9892C4.40066 22.9849 4.12877 22.6665 4.07439 22.1482C4.04829 21.8944 4.05481 21.6363 4.05917 21.3804C4.06787 20.9201 4.09832 20.5416 3.55453 20.219C3.24783 20.0383 3.23478 19.3759 3.05859 18.8382H21.989L21.9868 18.836Z" fill="#464C67"></path>
-                                <path d="M21.9939 4.40627C22.2375 6.72049 21.8133 7.598 20.3799 7.7378V4.40627H21.9939Z" fill="#464C67"></path>
-                                <path d="M4.85749 4.36721C4.87924 4.56293 4.90969 4.69412 4.90969 4.82747C4.91404 5.78886 4.90969 6.75025 4.90969 7.71379C3.19349 7.617 3.05646 6.31795 3.2718 4.36721H4.85749Z" fill="#464C67"></path>
-                            </svg>
                             <span>Shipping</span>
                         </div>
 
                          <div class="form-row">
                 <div class="form-field">
-                    <label for="vehicle-make">Make</label>
-                    <select id="vehicle-make" name="vehicle-make" required>
-                        <option value="">Select Make</option>
-                        <option value="toyota">Toyota</option>
-                        <option value="honda">Honda</option>
-                        <option value="ford">Ford</option>
-                        <option value="chevrolet">Chevrolet</option>
-                    </select>
-                </div>
+    <label for="vehicle-make">Make</label>
+    <select id="vehicle-make" name="vehicle-make" required>
+        <option value="">Select Make</option>
+        <option value="toyota">Toyota</option>
+        <option value="honda">Honda</option>
+        <option value="ford">Ford</option>
+        <option value="chevrolet">Chevrolet</option>
+        <option value="nissan">Nissan</option>
+        <option value="bmw">BMW</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+        <option value="volkswagen">Volkswagen</option>
+        <option value="hyundai">Hyundai</option>
+    </select>
+</div>
+
                 <div class="form-field">
                     <label for="vehicle-model">Model</label>
-                    <input type="text" id="vehicle-model" name="vehicle-model" required>
+                    <input type="text" placeholder=" Enter model"  id="vehicle-model" name="vehicle-model" required>
                 </div>
             </div>
 
@@ -1019,29 +1217,35 @@ hr {
         <div class="form-field">
             <label>Running:</label>
             <div class="radio-group">
-                <div class="radio-option">
+                 <label class="radio-option">
                     <input type="radio" id="running-yes" name="running" value="yes" checked>
-                    <label for="running-yes">Yes</label>
-                </div>
-                <div class="radio-option">
+                    <span class="radio-dot"></span>
+                    <span class="radio-label">Yes</span>
+                </label>
+                <label class="radio-option">
                     <input type="radio" id="running-no" name="running" value="no">
-                    <label for="running-no">No</label>
-                </div>
+                    <span class="radio-dot"></span>
+                    <span class="radio-label">No</span>
+                </label>
             </div>
         </div>
         
         <div class="form-field">
             <label>Carrier Type:</label>
-            <div class="radio-group">
-                <div class="radio-option">
-                    <input type="radio" id="carrier-open" name="carrier-type" value="open" checked>
-                    <label for="carrier-open">Open</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="carrier-enclosed" name="carrier-type" value="enclosed">
-                    <label for="carrier-enclosed">Enclosed</label>
-                </div>
-            </div>
+           <div class="radio-group">
+    <label class="radio-option">
+        <input type="radio" id="carrier-open" name="carrier-type" value="open" checked>
+        <span class="radio-dot"></span>
+        <span class="radio-label">Open</span>
+    </label>
+
+    <label class="radio-option">
+        <input type="radio" id="carrier-enclosed" name="carrier-type" value="enclosed">
+        <span class="radio-dot"></span>
+        <span class="radio-label">Enclosed</span>
+    </label>
+</div>
+
         </div>
     </div>
                         
@@ -1060,40 +1264,7 @@ hr {
                             </div>
                         </div>
 
-                        <!-- Size of Car -->
-                        <!-- <div class="form-group vehicle">
-                            <div class="dropdown size-of-car act-as-combobox">
-                                <button id="size-of-car" class="route-control caret dropdown-toggle" type="button">
-                                    <input type="text" name="vehicle" class="route-control size-of-car" placeholder="Size of Car" autocomplete="off" required tabindex="4" readonly>
-                                </button>
-
-                                <div class="dropdown-menu">
-                                    <div class="cars-grid">
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>Small Car</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>Midsize Car</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>Large car</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>Sports Car</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>Small SUV</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>6 Car</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>7 Car</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>8 Car</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>9 Car</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>10 Car</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/55/55283.png"><small>11 Car</small></div>
-                                        <div class="car-item plus-box" id="showMoreCars">+</div>
-                                    </div>
-
-                                    <div class="cars-grid hidden-cars" id="moreCars">
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/743/743007.png"><small>Van</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/743/743131.png"><small>Sports</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/743/743236.png"><small>Mini Van</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/743/743295.png"><small>Electric</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/743/743416.png"><small>Luxury</small></div>
-                                        <div class="car-item"><img src="https://cdn-icons-png.flaticon.com/512/743/743423.png"><small>Pickup</small></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+                    
                         
    <!-- Trigger Link -->
 <a id="addMoreVehicles" class="pl-2 modal-toggle w-100 text-add-car text-right" href="#">
@@ -1118,7 +1289,7 @@ hr {
 </div>
 
 <div class="continue-buttons" id="buttonContainer">
-  <input type="submit" id="route-confirm" class="btn" value="Get My Quote">
+  <input type="submit" id="route-confirm" class="btn" value="Continue to Contact">
   <button type="button" id="dealer-btn" class="btn dealer-btn hidden">
     Continue in<span class="mobile-break"><br></span>Dealership Portal
   </button>
@@ -1230,109 +1401,6 @@ hr {
   </div>
 </div>
 
-
-    
-
-            
-            <!-- <div class="form-row"> -->
-                <!-- <div class="form-field">
-                    <label for="vehicle-type">Vehicle</label>
-                    <select id="vehicle-type" name="vehicle-type" required>
-                        <option value="">Select Vehicle Type</option>
-                        <option value="sedan">Sedan</option>
-                        <option value="suv">SUV</option>
-                        <option value="truck">Truck</option>
-                        <option value="van">Van</option>
-                    </select>
-                </div> -->
-                <!-- <div class="form-field">
-                    <label for="vehicle-year">Year</label>
-                    <select id="vehicle-year" name="vehicle-year" required>
-                        <option value="">Select Year</option>
-                        Years will be populated by JavaScript -->
-                    <!-- </select> -->
-                <!-- </div> --> 
-            <!-- </div> -->
-            
-            <!-- <div class="form-row">
-                <div class="form-field">
-                    <label for="vehicle-make">Make</label>
-                    <select id="vehicle-make" name="vehicle-make" required>
-                        <option value="">Select Make</option>
-                        <option value="toyota">Toyota</option>
-                        <option value="honda">Honda</option>
-                        <option value="ford">Ford</option>
-                        <option value="chevrolet">Chevrolet</option>
-                    </select>
-                </div>
-                <div class="form-field">
-                    <label for="vehicle-model">Model</label>
-                    <input type="text" id="vehicle-model" name="vehicle-model" required>
-                </div>
-            </div> -->
-            
-            <!-- <div class="form-row">
-                <div class="form-field">
-                    <label for="shipping-date">Shipping Date:</label>
-                    <input type="date" id="shipping-date" name="shipping-date" required>
-                </div>
-            </div> -->
-            
-            <!-- <div class="form-row">
-                <div class="form-field">
-                    <label>Running:</label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="running-yes" name="running" value="yes" checked>
-                            <label for="running-yes">Yes</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="running-no" name="running" value="no">
-                            <label for="running-no">No</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-field">
-                    <label>Carrier Type:</label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="carrier-open" name="carrier-type" value="open" checked>
-                            <label for="carrier-open">Open</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="carrier-enclosed" name="carrier-type" value="enclosed">
-                            <label for="carrier-enclosed">Enclosed</label>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            
-            <!-- <div class="form-row">
-                <div class="form-field">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-            </div> -->
-            
-            <!-- <div class="promise-box">
-                <h3>The Patriot Promise</h3>
-                <p>We will send one quote per submission. We will not endlessly bombard your inbox which unfortunately is all too often the case in this industry. We're just like you, we're not fans of spam! Thank you for considering us.</p>
-            </div> -->
-            
-            <!-- <button type="submit" class="btn">Request Quote</button> -->
-            
-            <!-- <div class="optional-section">
-                <h3>Add Name and Number (optional)</h3>
-                <div class="form-row">
-                    <div class="form-field">
-                        <input type="text" id="optional-name" name="optional-name" placeholder="Full Name">
-                    </div>
-                    <div class="form-field">
-                        <input type="tel" id="optional-phone" name="optional-phone" placeholder="Phone Number">
-                    </div>
-                </div>
-            </div> -->
             
         
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -1877,102 +1945,108 @@ async function calculateMiles() {
 }
 
 // Run calculation automatically when both fields filled
-document.getElementById('delivery').addEventListener('change', calculateMiles);
-
-// ==========================
-// UPDATED CONTINUE BUTTON HANDLER
-// ==========================
-document.getElementById('continue-btn').addEventListener('click', function(e) {
-  e.preventDefault();
-
-  // First save all form data
-  if (!saveFormData()) {
-    alert("Please fill all required fields.");
-    return;
+  if (document.getElementById('delivery')) {
+    document.getElementById('delivery').addEventListener('change', calculateMiles);
   }
 
-  const pickupLat = document.getElementById('pickup-lat').value;
-  const pickupLon = document.getElementById('pickup-lon').value;
-  const deliveryLat = document.getElementById('delivery-lat').value;
-  const deliveryLon = document.getElementById('delivery-lon').value;
+  // ==========================
+  // UPDATED CONTINUE BUTTON HANDLER (FIXED)
+  // ==========================
+  const continueBtn = document.getElementById('continue-btn');
+  if (continueBtn) {
+    continueBtn.addEventListener('click', function(e) {
+      e.preventDefault();
 
-  if (!pickupLat || !pickupLon || !deliveryLat || !deliveryLon) {
-    alert("Please select both pickup and delivery locations from suggestions.");
-    return;
-  }
-
-  // Call OSRM API to get distance
-  const url = `https://router.project-osrm.org/route/v1/driving/${pickupLon},${pickupLat};${deliveryLon},${deliveryLat}?overview=false`;
-
-  const proxy = 'https://cors-anywhere.herokuapp.com/'; // TEMP
-fetch(proxy + url)
-  .then(res => res.json())
-    .then(data => {
-      if (data.routes && data.routes.length > 0) {
-        const meters = data.routes[0].distance;
-        const miles = (meters / 1609.34).toFixed(2);
-
-        // Save miles for pricing page
-        localStorage.setItem('tripMiles', miles);
-
-        // Redirect to pricing page
-        window.location.href = "pricing.html";
-      } else {
-        alert("Could not calculate route distance.");
+      // First save all form data
+      if (!saveFormData()) {
+        alert("Please fill all required fields.");
+        return;
       }
-    })
-    .catch(() => alert("Error fetching route data. Try again."));
-});
 
+      const pickupLat = document.getElementById('pickup-lat').value;
+      const pickupLon = document.getElementById('pickup-lon').value;
+      const deliveryLat = document.getElementById('delivery-lat').value;
+      const deliveryLon = document.getElementById('delivery-lon').value;
 
+      // If any coordinate missing, skip API and just go next page
+      if (!pickupLat || !pickupLon || !deliveryLat || !deliveryLon) {
+        window.location.href = "pricing.html";
+        return;
+      }
 
+      // Call OSRM API to get distance
+      const url = `https://router.project-osrm.org/route/v1/driving/${pickupLon},${pickupLat};${deliveryLon},${deliveryLat}?overview=false`;
+      const proxy = 'https://cors-anywhere.herokuapp.com/';
+
+      fetch(proxy + url)
+        .then(res => res.json())
+        .then(data => {
+          if (data.routes && data.routes.length > 0) {
+            const meters = data.routes[0].distance;
+            const miles = (meters / 1609.34).toFixed(2);
+            localStorage.setItem('tripMiles', miles);
+          }
+          // ✅ Always go to pricing page even if API fails
+          window.location.href = "pricing.html";
+        })
+        .catch(() => {
+          // ✅ No alert, just go to pricing
+          window.location.href = "pricing.html";
+        });
+    });
+  }
+
+  // ==========================
+  // EMAILJS INITIALIZATION + EMAIL FUNCTION
+  // ==========================
   (function() {
-    emailjs.init("9xcmQmNrpysoLipQc"); // ✅ tumhara public key
+    emailjs.init("9xcmQmNrpysoLipQc"); // ✅ your public key
   })();
 
- function sendEmailToOwner() {
-  const make = document.getElementById("vehicle-make")?.value || "";
-  const model = document.getElementById("vehicle-model")?.value || "";
-  const year = document.getElementById("vehicle-year")?.value || "";
-  const pickup_location = document.getElementById("pickup")?.value || "";
-  const delivery_location = document.getElementById("delivery")?.value || "";
-  const pickup_date = document.getElementById("shipping-date")?.value || "";
-const delivery_date = document.getElementById("shipping-date")?.value || "";
-  const route = pickup_location + " → " + delivery_location;
-  const carrier_type = document.querySelector('input[name="carrier-type"]:checked')?.value || "Open";
-  const status = "Pending";
-  const price = localStorage.getItem("tripMiles") ? `$${localStorage.getItem("tripMiles")}` : "N/A";
-  const email = document.getElementById("email")?.value || "";
-  const phone = document.getElementById("phone")?.value || "";
-  const name = document.getElementById("name")?.value || "Customer";
+  function sendEmailToOwner() {
+    const make = document.getElementById("vehicle-make")?.value || "";
+    const model = document.getElementById("vehicle-model")?.value || "";
+    const year = document.getElementById("vehicle-year")?.value || "";
+    const pickup_location = document.getElementById("pickup")?.value || "";
+    const delivery_location = document.getElementById("delivery")?.value || "";
+    const pickup_date = document.getElementById("shipping-date")?.value || "";
+    const delivery_date = document.getElementById("shipping-date")?.value || "";
+    const route = pickup_location + " → " + delivery_location;
+    const carrier_type = document.querySelector('input[name="carrier-type"]:checked')?.value || "Open";
+    const status = "Pending";
+    const price = localStorage.getItem("tripMiles") ? `$${localStorage.getItem("tripMiles")}` : "N/A";
+    const email = document.getElementById("email")?.value || "";
+    const phone = document.getElementById("phone")?.value || "";
+    const name = document.getElementById("name")?.value || "Customer";
 
-  const templateParams = {
-    make, model, year,
-    pickup_location, delivery_location,
-    pickup_date, delivery_date,
-    route, carrier_type, status,
-    price, email, phone, name
-  };
+    const templateParams = {
+      make, model, year,
+      pickup_location, delivery_location,
+      pickup_date, delivery_date,
+      route, carrier_type, status,
+      price, email, phone, name
+    };
 
-  emailjs.send("service_blm8kta", "template_7loc89s", templateParams)
-    .then(response => {
-      console.log("✅ Email sent successfully:", response);
-      alert("Email sent to owner!");
-    })
-    .catch(error => {
-      console.error("❌ Error sending email:", error);
-      alert("Failed to send email. Check console for details.");
-    });
-}
+    emailjs.send("service_blm8kta", "template_7loc89s", templateParams)
+      .then(response => {
+        console.log("✅ Email sent successfully:", response);
+        alert("Email sent to owner!");
+      })
+      .catch(error => {
+        console.error("❌ Error sending email:", error);
+        alert("Failed to send email. Check console for details.");
+      });
+  }
 
+  
+  // document.querySelectorAll('.location-form__tabs--link').forEach(tab => {
+  //   tab.addEventListener('click', () => {
+  //     document.querySelectorAll('.location-form__tabs--link').forEach(t => t.classList.remove('active'));
+  //     tab.classList.add('active');
+  //   });
+  // });
 
-
-
-
-
+  
 </script>
-
-
-
 </body>
 </html>

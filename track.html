@@ -21,26 +21,40 @@
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       overflow: hidden;
+      margin-top: 30px;
     }
 
-    .tabs {
-      display: flex;
-      background: #eef2ff;
-    }
+.tabs {
+  display: flex;
+  background: #eef2ff;
+  
+}
 
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 15px;
-      font-weight: 600;
-      color: #1d3b6f;
-      text-decoration: none;
-    }
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+  color: #1d3b6f;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 
-    .tab.active {
-      background: #fff;
-      border-bottom: 3px solid #4caf50;
-    }
+.tab img.tab-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.tab.active {
+  background: #fff;
+  /* border-bottom: 3px solid #0066cc; */
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
 
     .form-container {
       padding: 30px;
@@ -121,9 +135,17 @@
 <body>
   <div class="container">
     <div class="tabs">
-      <a href="index.html" class="tab">🚚 Calculate Shipping</a>
-      <a href="#" class="tab active">📍 Track a Shipment</a>
-    </div>
+  <a href="index.html" class="tab">
+    <img src="calculator-icon.svg" alt="Calculate" class="tab-icon">
+    Calculate Shipping
+  </a>
+
+  <a href="track.html" class="tab active">
+    <img src="marker-multiple.svg" alt="Track" class="tab-icon">
+    Track a Shipment
+  </a>
+</div>
+
 
     <div class="form-container">
       <h2>Order Details</h2>
