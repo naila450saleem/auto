@@ -24,36 +24,65 @@
       margin-top: 30px;
     }
 
+/* Tabs Wrapper */
 .tabs {
   display: flex;
-  background: #eef2ff;
-  
+  justify-content: center;
+  background: #d1d4e6;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  overflow: hidden;
+  gap: 0;
 }
 
+/* Each Tab */
 .tab {
   flex: 1;
   text-align: center;
-  padding: 15px;
-  font-weight: 600;
-  color: #1d3b6f;
   text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 8px 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #5a607f; /* default grey text */
+  background-color: #d1d4e6; /* default light grey */
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  border-radius: 10px;
 }
 
+/* Tab Icon */
 .tab img.tab-icon {
   width: 22px;
   height: 22px;
   object-fit: contain;
 }
 
+/* Active Tab */
 .tab.active {
-  background: #fff;
-  /* border-bottom: 3px solid #0066cc; */
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  background-color: #581eff; /* Blue active background */
+  color: #ffffff; /* White text */
+  box-shadow: none; /* remove old box shadow */
 }
+
+/* Hover (for inactive tabs) */
+.tab:not(.active):hover {
+  background-color: #d9deef; /* light hover */
+}
+
+/* Optional: tweak paragraph inside tab */
+.tab p {
+  font-weight: 400;
+  color: inherit;
+  margin: 0;
+  font-size: 14px;
+  text-decoration: none !important;
+}
+
 
 
     .form-container {
@@ -92,11 +121,11 @@
 
     .submit-btn {
       width: 100%;
-      background: #c5ff91;
-      color: #1d3b6f;
+      background: #581eff;;
+      color: #fff;
       font-size: 17px;
-      font-weight: 600;
-      padding: 14px;
+      font-weight: 400;
+      padding: 8px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -136,13 +165,13 @@
   <div class="container">
     <div class="tabs">
   <a href="index.html" class="tab">
-    <img src="calculator-icon.svg" alt="Calculate" class="tab-icon">
-    Calculate Shipping
+    <!-- <img src="calculator-icon.svg" alt="Calculate" class="tab-icon"> -->
+    Route & Shipping
   </a>
 
   <a href="track.html" class="tab active">
-    <img src="marker-multiple.svg" alt="Track" class="tab-icon">
-    Track a Shipment
+    <!-- <img src="marker-multiple.svg" alt="Track" class="tab-icon"> -->
+    Contact
   </a>
 </div>
 
