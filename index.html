@@ -1993,93 +1993,205 @@ async function calculateMiles() {
   }
 
   // ==========================
-  // UPDATED CONTINUE BUTTON HANDLER (FIXED)
-  // ==========================
-  const continueBtn = document.getElementById('continue-btn');
-  if (continueBtn) {
-    continueBtn.addEventListener('click', function(e) {
-      e.preventDefault();
+// UPDATED CONTINUE BUTTON HANDLER (FINAL - FIXED DISTANCE)
+// ==========================
+const continueBtn = document.getElementById('continue-btn');
+if (continueBtn) {
+  continueBtn.addEventListener('click', async function (e) {
+    e.preventDefault();
 
-      // First save all form data
+    // ✅ Phone + Email validation
+    const phone = document.getElementById('phone')?.value.trim();
+    const email = document.getElementById('email')?.value.trim();
+
+    if (!phone || !email) {
+      alert("⚠️ Please enter both phone and email before continuing.");
+      return;
+    }
+
+    // ✅ Email format check
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      alert("⚠️ Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      // ✅ Calculate ACTUAL distance and price first
+      const { miles, price } = await calculateActualDistanceAndPrice();
+      
+      // ✅ Save to localStorage
+      localStorage.setItem('tripMiles', miles.toFixed(2));
+      localStorage.setItem('calculatedPrice', `$${price.toFixed(2)}`);
+      
+      console.log(`✅ Final Calculation: ${miles.toFixed(2)} miles = $${price.toFixed(2)}`);
+
+      // ✅ Save form data
       if (!saveFormData()) {
         alert("Please fill all required fields.");
         return;
       }
 
-      const pickupLat = document.getElementById('pickup-lat').value;
-      const pickupLon = document.getElementById('pickup-lon').value;
-      const deliveryLat = document.getElementById('delivery-lat').value;
-      const deliveryLon = document.getElementById('delivery-lon').value;
+      // ✅ Send email with ACCURATE price
+      await sendEmailToOwner();
+      console.log("✅ Email sent successfully with accurate pricing");
 
-      // If any coordinate missing, skip API and just go next page
-      if (!pickupLat || !pickupLon || !deliveryLat || !deliveryLon) {
-        window.location.href = "pricing.html";
-        return;
-      }
+      // ✅ Redirect to pricing page
+      window.location.href = "pricing.html";
 
-      // Call OSRM API to get distance
-      const url = `https://router.project-osrm.org/route/v1/driving/${pickupLon},${pickupLat};${deliveryLon},${deliveryLat}?overview=false`;
-      const proxy = 'https://cors-anywhere.herokuapp.com/';
+    } catch (err) {
+      console.error("❌ Error:", err);
+      alert("Failed to process your request. Please try again.");
+    }
+  });
+}
 
-      fetch(proxy + url)
-        .then(res => res.json())
-        .then(data => {
-          if (data.routes && data.routes.length > 0) {
-            const meters = data.routes[0].distance;
-            const miles = (meters / 1609.34).toFixed(2);
-            localStorage.setItem('tripMiles', miles);
-          }
-          // ✅ Always go to pricing page even if API fails
-          window.location.href = "pricing.html";
-        })
-        .catch(() => {
-          // ✅ No alert, just go to pricing
-          window.location.href = "pricing.html";
-        });
+// ==========================
+// NEW: ACCURATE DISTANCE & PRICE CALCULATION
+// ==========================
+async function calculateActualDistanceAndPrice() {
+  const pickupAddress = document.getElementById('pickup').value;
+  const deliveryAddress = document.getElementById('delivery').value;
+  
+  if (!pickupAddress || !deliveryAddress) {
+    throw new Error("Pickup or delivery address missing");
+  }
+
+  console.log("📍 Calculating distance for:", pickupAddress, "→", deliveryAddress);
+
+  // Get coordinates
+  const pickup = await getCoordinates(pickupAddress);
+  const dropoff = await getCoordinates(deliveryAddress);
+  
+  if (!pickup || !dropoff) {
+    throw new Error("Could not get coordinates for addresses");
+  }
+
+  console.log("✅ Coordinates found:", pickup, dropoff);
+
+  // Get distance using OSRM
+  const distanceMeters = await getDistance(pickup, dropoff);
+  if (!distanceMeters) {
+    throw new Error("Could not calculate route distance");
+  }
+
+  // Convert to miles
+  const miles = (distanceMeters / 1609.34);
+  console.log(`📍 Raw distance: ${distanceMeters} meters = ${miles.toFixed(2)} miles`);
+
+  // Calculate price based on carrier type and condition
+  const carrierType = document.querySelector('input[name="carrier-type"]:checked')?.value || 'open';
+  const vehicleCondition = document.querySelector('input[name="running"]:checked')?.value || 'yes';
+  
+  // ✅ Simple formula: Open = miles × 45, Enclosed = miles × 55
+  let baseRate = carrierType.toLowerCase() === 'enclosed' ? 55 : 45;
+  let price = miles * baseRate;
+  
+  // ✅ Add $50 for inoperable vehicle (150+ miles wali condition remove kiya)
+  if (vehicleCondition !== 'yes') {
+    price += 50;
+  }
+
+  console.log(`💰 Price calculation: ${miles.toFixed(2)} miles × $${baseRate} = $${price.toFixed(2)}`);
+
+  return { miles, price };
+}
+
+// ==========================
+// IMPROVED COORDINATES FUNCTION
+// ==========================
+async function getCoordinates(address) {
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}&countrycodes=us`;
+
+  try {
+    const res = await fetch(url, { 
+      headers: { 
+        'Accept-Language': 'en',
+        'User-Agent': 'CarShippingApp/1.0'
+      } 
     });
+    const data = await res.json();
+    
+    if (data.length > 0) {
+      return { 
+        lat: parseFloat(data[0].lat), 
+        lon: parseFloat(data[0].lon),
+        display_name: data[0].display_name
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting coordinates:", error);
+    return null;
   }
+}
 
-  // ==========================
-  // EMAILJS INITIALIZATION + EMAIL FUNCTION
-  // ==========================
-  (function() {
-    emailjs.init("9xcmQmNrpysoLipQc"); // ✅ your public key
-  })();
+// ==========================
+// IMPROVED DISTANCE FUNCTION
+// ==========================
+async function getDistance(pickup, dropoff) {
+  const url = `https://router.project-osrm.org/route/v1/driving/${pickup.lon},${pickup.lat};${dropoff.lon},${dropoff.lat}?overview=false`;
 
-  function sendEmailToOwner() {
-    const make = document.getElementById("vehicle-make")?.value || "";
-    const model = document.getElementById("vehicle-model")?.value || "";
-    const year = document.getElementById("vehicle-year")?.value || "";
-    const pickup_location = document.getElementById("pickup")?.value || "";
-    const delivery_location = document.getElementById("delivery")?.value || "";
-    const pickup_date = document.getElementById("shipping-date")?.value || "";
-    const delivery_date = document.getElementById("shipping-date")?.value || "";
-    const route = pickup_location + " → " + delivery_location;
-    const carrier_type = document.querySelector('input[name="carrier-type"]:checked')?.value || "Open";
-    const status = "Pending";
-    const price = localStorage.getItem("tripMiles") ? `$${localStorage.getItem("tripMiles")}` : "N/A";
-    const email = document.getElementById("email")?.value || "";
-    const phone = document.getElementById("phone")?.value || "";
-    const name = document.getElementById("name")?.value || "Customer";
-
-    const templateParams = {
-      make, model, year,
-      pickup_location, delivery_location,
-      pickup_date, delivery_date,
-      route, carrier_type, status,
-      price, email, phone, name
-    };
-
-    emailjs.send("service_blm8kta", "template_7loc89s", templateParams)
-      .then(response => {
-        console.log("✅ Email sent successfully:", response);
-        alert("Email sent to owner!");
-      })
-      .catch(error => {
-        console.error("❌ Error sending email:", error);
-        alert("Failed to send email. Check console for details.");
-      });
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    
+    if (data && data.routes && data.routes.length > 0) {
+      console.log("✅ Route found, distance:", data.routes[0].distance, "meters");
+      return data.routes[0].distance;
+    } else {
+      console.error("❌ No route found in response:", data);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting distance:", error);
+    return null;
   }
+}
+
+// ==========================
+// UPDATED EMAIL FUNCTION
+// ==========================
+async function sendEmailToOwner() {
+  const make = document.getElementById("vehicle-make")?.value || "";
+  const model = document.getElementById("vehicle-model")?.value || "";
+  const year = document.getElementById("vehicle-year")?.value || "";
+  const pickup_location = document.getElementById("pickup")?.value || "";
+  const delivery_location = document.getElementById("delivery")?.value || "";
+  const pickup_date = document.getElementById("shipping-date")?.value || "";
+  const delivery_date = document.getElementById("shipping-date")?.value || "";
+  const route = pickup_location + " → " + delivery_location;
+  const carrier_type = document.querySelector('input[name="carrier-type"]:checked')?.value || "Open";
+  const status = "Pending";
+
+  // ✅ Use the CALCULATED price from localStorage
+  const price = localStorage.getItem("calculatedPrice") || "$0.00";
+  const miles = localStorage.getItem('tripMiles') || "0";
+
+  const email = document.getElementById("email")?.value || "";
+  const phone = document.getElementById("phone")?.value || "";
+  const name = document.getElementById("name")?.value || "Customer";
+
+  const templateParams = {
+    make, model, year,
+    pickup_location, delivery_location,
+    pickup_date, delivery_date,
+    route, carrier_type, status,
+    price, email, phone, name,
+    miles: `${miles} miles`
+  };
+
+  console.log("📧 Sending email with:", templateParams);
+  return emailjs.send("service_blm8kta", "template_7loc89s", templateParams);
+}
+
+// ==========================
+// EMAILJS INITIALIZATION
+// ==========================
+(function() {
+  emailjs.init("9xcmQmNrpysoLipQc");
+})();
+
 
   
   // document.querySelectorAll('.location-form__tabs--link').forEach(tab => {

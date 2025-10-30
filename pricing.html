@@ -320,13 +320,14 @@
       </div>
 
       <div class="summary-item">
-        <div class="summary-label">Route</div>
-        <div class="summary-value" id="summary-route">
-          From: <span id="summary-pickup">--</span><br>
-          To: <span id="summary-delivery">--</span><br>
-          Date: <span id="summary-date">7DAYS</span>
-        </div>
-      </div>
+  <div class="summary-label">Route</div>
+  <div class="summary-value" id="summary-route">
+    From: <span id="summary-pickup">--</span><br>
+    To: <span id="summary-delivery">--</span><br>
+    Distance: <span id="summary-distance">Calculating...</span><br>
+    Date: <span id="summary-date">7DAYS</span>
+  </div>
+</div>
 
       <div class="summary-item">
         <div class="summary-label">Shipping Plan</div>
@@ -345,97 +346,152 @@
 <button class="btn back-btn" onclick="goBack()">← Go Back</button>
 
 <script>
-  // Fetch data from localStorage
-  const miles = parseFloat(localStorage.getItem('tripMiles')) || 0;
-  const vehicleMake = localStorage.getItem('vehicleMake') || '';
-  const vehicleModel = localStorage.getItem('vehicleModel') || '';
-  const vehicleYear = localStorage.getItem('vehicleYear') || '';
-  const pickupLocation = localStorage.getItem('pickupLocation') || '--';
-  const deliveryLocation = localStorage.getItem('deliveryLocation') || '--';
-  const shippingDate = localStorage.getItem('shippingDate') || '--';
-  const vehicleCondition = localStorage.getItem('vehicleCondition') || 'yes';
-  const carrierType = localStorage.getItem('carrierType') || 'open';
-  const pickupDate = localStorage.getItem('pickupDate') || '--';
+  // ======= DYNAMIC PRICE CALCULATION =======
+  function calculateDynamicPrice() {
+    const miles = parseFloat(localStorage.getItem('tripMiles')) || 0;
+    const vehicleCondition = localStorage.getItem('vehicleCondition') || 'yes';
+    const carrierType = localStorage.getItem('carrierType') || 'open';
 
-  // Format dates for display
-  function formatDate(dateString) {
-    if (!dateString || dateString === '--') return '7DAYS';
-    
-    // If it's already a readable string (from dropdown)
-    if (dateString.includes('As soon as possible') || 
-        dateString.includes('Within 7 days') || 
-        dateString.includes('On a particular date') || 
-        dateString.includes('I don\'t know yet')) {
-        return dateString;
+    let basePrice = 0;
+
+    if (miles > 0) {
+      // ✅ Apply carrier-based rate
+      const rate = carrierType.toLowerCase() === 'enclosed' ? 55 : 45;
+      basePrice = miles * rate;
+
+      // ✅ Add $50 for inoperable vehicle (150+ wala condition remove kiya)
+      if (vehicleCondition !== 'yes') {
+        basePrice += 50;
+      }
     }
+
+    return basePrice;
+  }
+
+  // ======= UPDATE PRICE DISPLAY =======
+  function updatePriceDisplay() {
+    const basePrice = calculateDynamicPrice();
     
-    // If it's a date string, format it
-    try {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        });
-    } catch (e) {
-        return dateString;
+    // Save calculated price
+    localStorage.setItem("calculatedPrice", `$${basePrice.toFixed(2)}`);
+
+    // Update all price elements
+    const priceElements = [
+      'standard-price',
+      'cash-price', 
+      'summary-plan',
+      'total-price'
+    ];
+
+    priceElements.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) {
+        if (id === 'cash-price') {
+          element.textContent = `$${(basePrice * 0.95).toFixed(2)}`; // 5% discount
+        } else if (id === 'summary-plan') {
+          element.textContent = `Standard Price: $${basePrice.toFixed(2)}`;
+        } else {
+          element.textContent = `$${basePrice.toFixed(2)}`;
+        }
+      }
+    });
+
+    // Update distance display if available
+    const miles = parseFloat(localStorage.getItem('tripMiles')) || 0;
+    const distanceElement = document.getElementById('summary-distance');
+    if (distanceElement) {
+      if (miles > 0) {
+        distanceElement.textContent = `${miles.toFixed(2)} miles`;
+      } else {
+        distanceElement.textContent = 'Calculating...';
+      }
     }
   }
 
-  // Format carrier type for display
+  // ======= HELPER FUNCTIONS =======
+  function formatDate(dateString) {
+    if (!dateString || dateString === '--') return '7DAYS';
+
+    if (dateString.includes('As soon as possible') || 
+        dateString.includes('Within 7 days') || 
+        dateString.includes('On a particular date') || 
+        dateString.includes("I don't know yet")) {
+      return dateString;
+    }
+
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+    } catch (e) {
+      return dateString;
+    }
+  }
+
   function formatCarrierType(type) {
     if (type === 'open') return 'Open';
     if (type === 'enclosed') return 'Enclosed';
     return type;
   }
 
-  // Format vehicle for display
   function formatVehicle() {
-    const vehicle = ` ${vehicleMake} `.trim();
+    const vehicleMake = localStorage.getItem('vehicleMake') || '';
+    const vehicleModel = localStorage.getItem('vehicleModel') || '';
+    const vehicle = `${vehicleMake} ${vehicleModel}`.trim();
     return vehicle || 'Small Car';
   }
 
-  // Calculate base price based on miles
-  let basePrice = 0;
-  if (miles > 0) {
-    basePrice = miles * 1.00; // $1 per mile base rate
-  }
+  // ======= INITIALIZE PRICING PAGE =======
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get fresh data from localStorage
+    const vehicleMake = localStorage.getItem('vehicleMake') || '';
+    const vehicleModel = localStorage.getItem('vehicleModel') || '';
+    const vehicleYear = localStorage.getItem('vehicleYear') || '';
+    const pickupLocation = localStorage.getItem('pickupLocation') || '--';
+    const deliveryLocation = localStorage.getItem('deliveryLocation') || '--';
+    const shippingDate = localStorage.getItem('shippingDate') || '--';
+    const vehicleCondition = localStorage.getItem('vehicleCondition') || 'yes';
+    const carrierType = localStorage.getItem('carrierType') || 'open';
+    const pickupDate = localStorage.getItem('pickupDate') || '--';
 
-  // Update summary section
-  document.getElementById('summary-vehicle').textContent = formatVehicle();
-  
-  // Update vehicle condition display
-  const conditionElement = document.getElementById('summary-condition');
-  if (vehicleCondition === 'yes') {
-    conditionElement.innerHTML = '<span style="color: #28a745;">●</span> Operable  <span style="color: #ccc;">○</span> Inoperable (+$150)';
-  } else {
-    conditionElement.innerHTML = '<span style="color: #ccc;">○</span> Operable  <span style="color: #28a745;">●</span> Inoperable (+$150)';
-    // Add $150 for inoperable vehicles
-    basePrice += 150;
-  }
-  
-  document.getElementById('summary-carrier').textContent = formatCarrierType(carrierType);
-  document.getElementById('summary-pickup').textContent = pickupLocation;
-  document.getElementById('summary-delivery').textContent = deliveryLocation;
-  
-  // Use pickup date from dropdown if available, otherwise use shipping date
-  const displayDate = pickupDate !== '--' ? pickupDate : shippingDate;
-  document.getElementById('summary-date').textContent = formatDate(displayDate);
-  
-  // Update price options
-  document.getElementById('standard-price').textContent = `$${basePrice.toFixed(2)}`;
-  document.getElementById('cash-price').textContent = `$${(basePrice * 0.95).toFixed(2)}`; // 5% discount for cash
-  
-  // Update shipping plan
-  document.getElementById('summary-plan').textContent = `Standard Price: $${basePrice.toFixed(2)}`;
-  
-  // Update total price
-  document.getElementById('total-price').textContent = `$${basePrice.toFixed(2)}`;
+    // Calculate and display price immediately
+    updatePriceDisplay();
+    
+    // Update summary information
+    document.getElementById('summary-vehicle').textContent = formatVehicle();
 
+    const conditionElement = document.getElementById('summary-condition');
+    if (vehicleCondition === 'yes') {
+      conditionElement.innerHTML = '<span style="color: #28a745;">●</span> Operable  <span style="color: #ccc;">○</span> Inoperable (+$50)';
+    } else {
+      conditionElement.innerHTML = '<span style="color: #ccc;">○</span> Operable  <span style="color: #28a745;">●</span> Inoperable (+$50)';
+    }
+
+    document.getElementById('summary-carrier').textContent = formatCarrierType(carrierType);
+    document.getElementById('summary-pickup').textContent = pickupLocation;
+    document.getElementById('summary-delivery').textContent = deliveryLocation;
+
+    const displayDate = pickupDate !== '--' ? pickupDate : shippingDate;
+    document.getElementById('summary-date').textContent = formatDate(displayDate);
+
+    // Update distance
+    const miles = parseFloat(localStorage.getItem('tripMiles')) || 0;
+    const distanceElement = document.getElementById('summary-distance');
+    if (distanceElement && miles > 0) {
+      distanceElement.textContent = `${miles.toFixed(2)} miles`;
+    }
+  });
+
+  // ======= BACK BUTTON FUNCTION =======
   function goBack() {
-    window.location.href = "index.html"; // adjust to your main page URL
+    window.location.href = "index.html";
   }
 </script>
+
+
 
 </body>
 </html>
