@@ -1370,7 +1370,7 @@ border: 2.5px solid #6e5bff;
   </div>
 
   <div class="form-field">
-    <input type="email" id="email" name="email" placeholder="Email" required onchange="sendEmailToOwner()">
+   <input type="email" id="email" name="email" placeholder="Email" required>
   </div>
 
   <div class="checkbox-group">
@@ -1988,17 +1988,19 @@ async function calculateMiles() {
 }
 
 // Run calculation automatically when both fields filled
-  if (document.getElementById('delivery')) {
-    document.getElementById('delivery').addEventListener('change', calculateMiles);
-  }
+  // if (document.getElementById('delivery')) {
+  //   document.getElementById('delivery').addEventListener('change', calculateMiles);
+  // }
 
-  // ==========================
-// UPDATED CONTINUE BUTTON HANDLER (FINAL - FIXED DISTANCE)
+// ==========================
+// UPDATED CONTINUE BUTTON HANDLER (FIXED EMAIL)
 // ==========================
 const continueBtn = document.getElementById('continue-btn');
 if (continueBtn) {
   continueBtn.addEventListener('click', async function (e) {
     e.preventDefault();
+
+    console.log("🎯 Continue button clicked");
 
     // ✅ Phone + Email validation
     const phone = document.getElementById('phone')?.value.trim();
@@ -2016,7 +2018,13 @@ if (continueBtn) {
       return;
     }
 
+    // ✅ DISABLE BUTTON to prevent multiple clicks
+    continueBtn.disabled = true;
+    continueBtn.textContent = "Processing...";
+
     try {
+      console.log("🔄 Step 1: Calculating distance and price...");
+
       // ✅ Calculate ACTUAL distance and price first
       const { miles, price } = await calculateActualDistanceAndPrice();
       
@@ -2024,24 +2032,35 @@ if (continueBtn) {
       localStorage.setItem('tripMiles', miles.toFixed(2));
       localStorage.setItem('calculatedPrice', `$${price.toFixed(2)}`);
       
-      console.log(`✅ Final Calculation: ${miles.toFixed(2)} miles = $${price.toFixed(2)}`);
+      console.log(`✅ Step 1 Complete: ${miles.toFixed(2)} miles = $${price.toFixed(2)}`);
 
       // ✅ Save form data
+      console.log("🔄 Step 2: Saving form data...");
       if (!saveFormData()) {
         alert("Please fill all required fields.");
+        continueBtn.disabled = false;
+        continueBtn.textContent = "Continue to Pricing";
         return;
       }
 
-      // ✅ Send email with ACCURATE price
-      await sendEmailToOwner();
-      console.log("✅ Email sent successfully with accurate pricing");
+      // ✅ Send email with proper error handling
+      console.log("🔄 Step 3: Sending email...");
+      const emailResult = await sendEmailToOwner();
+      console.log("✅ Step 3 Complete: Email sent successfully!", emailResult);
 
       // ✅ Redirect to pricing page
-      window.location.href = "pricing.html";
+      console.log("🔀 Step 4: Redirecting to pricing page...");
+      setTimeout(() => {
+        window.location.href = "pricing.html";
+      }, 1000);
 
     } catch (err) {
       console.error("❌ Error:", err);
-      alert("Failed to process your request. Please try again.");
+      alert("Failed to send email. Please check your connection and try again.");
+      
+      // ✅ Re-enable button on error
+      continueBtn.disabled = false;
+      continueBtn.textContent = "Continue to Pricing";
     }
   });
 }
@@ -2083,16 +2102,16 @@ async function calculateActualDistanceAndPrice() {
   const carrierType = document.querySelector('input[name="carrier-type"]:checked')?.value || 'open';
   const vehicleCondition = document.querySelector('input[name="running"]:checked')?.value || 'yes';
   
-  // ✅ Simple formula: Open = miles × 45, Enclosed = miles × 55
-  let baseRate = carrierType.toLowerCase() === 'enclosed' ? 55 : 45;
-  let price = miles * baseRate;
+  // ✅ PERCENTAGE FORMULA: Open = miles × 45%, Enclosed = miles × 55%
+  let baseRatePercentage = carrierType.toLowerCase() === 'enclosed' ? 0.55 : 0.45;
+  let price = miles * baseRatePercentage;
   
-  // ✅ Add $50 for inoperable vehicle (150+ miles wali condition remove kiya)
+  // ✅ Add $50 for inoperable vehicle
   if (vehicleCondition !== 'yes') {
     price += 50;
   }
 
-  console.log(`💰 Price calculation: ${miles.toFixed(2)} miles × $${baseRate} = $${price.toFixed(2)}`);
+  console.log(`💰 Price calculation: ${miles.toFixed(2)} miles × ${(baseRatePercentage * 100)}% = $${price.toFixed(2)}`);
 
   return { miles, price };
 }
@@ -2150,39 +2169,62 @@ async function getDistance(pickup, dropoff) {
 }
 
 // ==========================
-// UPDATED EMAIL FUNCTION
+// IMPROVED EMAIL FUNCTION (WITH BETTER ERROR HANDLING)
 // ==========================
 async function sendEmailToOwner() {
-  const make = document.getElementById("vehicle-make")?.value || "";
-  const model = document.getElementById("vehicle-model")?.value || "";
-  const year = document.getElementById("vehicle-year")?.value || "";
-  const pickup_location = document.getElementById("pickup")?.value || "";
-  const delivery_location = document.getElementById("delivery")?.value || "";
-  const pickup_date = document.getElementById("shipping-date")?.value || "";
-  const delivery_date = document.getElementById("shipping-date")?.value || "";
-  const route = pickup_location + " → " + delivery_location;
-  const carrier_type = document.querySelector('input[name="carrier-type"]:checked')?.value || "Open";
-  const status = "Pending";
+  try {
+    console.log("📧 Starting email sending process...");
 
-  // ✅ Use the CALCULATED price from localStorage
-  const price = localStorage.getItem("calculatedPrice") || "$0.00";
-  const miles = localStorage.getItem('tripMiles') || "0";
+    // Get form data
+    const make = document.getElementById("vehicle-make")?.value || "";
+    const model = document.getElementById("vehicle-model")?.value || "";
+    const year = document.getElementById("vehicle-year")?.value || "";
+    const pickup_location = document.getElementById("pickup")?.value || "";
+    const delivery_location = document.getElementById("delivery")?.value || "";
+    const pickup_date = document.getElementById("shipping-date")?.value || "";
+    const delivery_date = document.getElementById("shipping-date")?.value || "";
+    const route = pickup_location + " → " + delivery_location;
+    const carrier_type = document.querySelector('input[name="carrier-type"]:checked')?.value || "Open";
+    const status = "Pending";
 
-  const email = document.getElementById("email")?.value || "";
-  const phone = document.getElementById("phone")?.value || "";
-  const name = document.getElementById("name")?.value || "Customer";
+    // Get calculated price and miles
+    const price = localStorage.getItem("calculatedPrice") || "$0.00";
+    const miles = localStorage.getItem('tripMiles') || "0";
 
-  const templateParams = {
-    make, model, year,
-    pickup_location, delivery_location,
-    pickup_date, delivery_date,
-    route, carrier_type, status,
-    price, email, phone, name,
-    miles: `${miles} miles`
-  };
+    const email = document.getElementById("email")?.value || "";
+    const phone = document.getElementById("phone")?.value || "";
+    const name = document.getElementById("name")?.value || "Customer";
 
-  console.log("📧 Sending email with:", templateParams);
-  return emailjs.send("service_blm8kta", "template_7loc89s", templateParams);
+    console.log("📧 Email data:", {
+      make, model, year, pickup_location, delivery_location,
+      price, email, phone, name, miles
+    });
+
+    const templateParams = {
+      make, model, year,
+      pickup_location, delivery_location,
+      pickup_date, delivery_date,
+      route, carrier_type, status,
+      price, email, phone, name,
+      miles: `${miles} miles`
+    };
+
+    console.log("📧 Sending email via EmailJS...");
+    
+    // Send email with timeout
+    const emailPromise = emailjs.send("service_blm8kta", "template_7loc89s", templateParams);
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Email sending timeout")), 10000)
+    );
+
+    const result = await Promise.race([emailPromise, timeoutPromise]);
+    console.log("✅ Email sent successfully:", result);
+    return result;
+
+  } catch (error) {
+    console.error("❌ Email sending failed:", error);
+    throw new Error(`Email sending failed: ${error.message}`);
+  }
 }
 
 // ==========================

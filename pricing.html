@@ -281,7 +281,7 @@
       </div>
       <div class="book-online-box">
   <a href="https://yourbookinglink.com" class="book-btn">Book Online</a>
-  <a href="tel:224-218-2949" class="book-phone">224-218-2949</a>
+  <a href="tel:224-218-2949" class="book-phone">+1 (786) 745-6259</a>
 </div>
 
     </div>
@@ -294,7 +294,7 @@
       </div>
       <div class="book-online-box">
   <a href="https://yourbookinglink.com" class="book-btn">Book Online</a>
-  <a href="tel:224-218-2949" class="book-phone">224-218-2949</a>
+  <a href="tel:224-218-2949" class="book-phone">+1 (786) 745-6259</a>
 </div>
 
     </div>
@@ -346,27 +346,27 @@
 <button class="btn back-btn" onclick="goBack()">← Go Back</button>
 
 <script>
-  // ======= DYNAMIC PRICE CALCULATION =======
-  function calculateDynamicPrice() {
-    const miles = parseFloat(localStorage.getItem('tripMiles')) || 0;
-    const vehicleCondition = localStorage.getItem('vehicleCondition') || 'yes';
-    const carrierType = localStorage.getItem('carrierType') || 'open';
+// ======= DYNAMIC PRICE CALCULATION (WITH PERCENTAGE) =======
+function calculateDynamicPrice() {
+  const miles = parseFloat(localStorage.getItem('tripMiles')) || 0;
+  const vehicleCondition = localStorage.getItem('vehicleCondition') || 'yes';
+  const carrierType = localStorage.getItem('carrierType') || 'open';
 
-    let basePrice = 0;
+  let basePrice = 0;
 
-    if (miles > 0) {
-      // ✅ Apply carrier-based rate
-      const rate = carrierType.toLowerCase() === 'enclosed' ? 55 : 45;
-      basePrice = miles * rate;
+  if (miles > 0) {
+    // ✅ Apply carrier-based rate (PERCENTAGE)
+    const ratePercentage = carrierType.toLowerCase() === 'enclosed' ? 0.55 : 0.45;
+    basePrice = miles * ratePercentage;
 
-      // ✅ Add $50 for inoperable vehicle (150+ wala condition remove kiya)
-      if (vehicleCondition !== 'yes') {
-        basePrice += 50;
-      }
+    // ✅ Add $50 for inoperable vehicle
+    if (vehicleCondition !== 'yes') {
+      basePrice += 50;
     }
-
-    return basePrice;
   }
+
+  return basePrice;
+}
 
   // ======= UPDATE PRICE DISPLAY =======
   function updatePriceDisplay() {
