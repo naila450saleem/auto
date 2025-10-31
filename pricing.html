@@ -346,7 +346,7 @@
 <button class="btn back-btn" onclick="goBack()">← Go Back</button>
 
 <script>
-// ======= DYNAMIC PRICE CALCULATION (WITH PERCENTAGE) =======
+// ======= DYNAMIC PRICE CALCULATION (CLIENT'S CLEAR VERSION) =======
 function calculateDynamicPrice() {
   const miles = parseFloat(localStorage.getItem('tripMiles')) || 0;
   const vehicleCondition = localStorage.getItem('vehicleCondition') || 'yes';
@@ -355,12 +355,20 @@ function calculateDynamicPrice() {
   let basePrice = 0;
 
   if (miles > 0) {
-    // ✅ Apply carrier-based rate (PERCENTAGE)
-    const ratePercentage = carrierType.toLowerCase() === 'enclosed' ? 0.55 : 0.45;
+    // Client's clear if-else pattern
+    let ratePercentage;
+    if (carrierType === "open") {
+      ratePercentage = 0.45;
+    } else if (carrierType === "enclosed") {
+      ratePercentage = 0.55;
+    } else {
+      ratePercentage = 0.45; // fallback to open
+    }
+    
     basePrice = miles * ratePercentage;
 
-    // ✅ Add $50 for inoperable vehicle
-    if (vehicleCondition !== 'yes') {
+    // Add $50 if not running
+    if (vehicleCondition !== "yes") {
       basePrice += 50;
     }
   }

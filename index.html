@@ -2066,7 +2066,7 @@ if (continueBtn) {
 }
 
 // ==========================
-// NEW: ACCURATE DISTANCE & PRICE CALCULATION
+// NEW: ACCURATE DISTANCE & PRICE CALCULATION (CLIENT'S CLEAR VERSION)
 // ==========================
 async function calculateActualDistanceAndPrice() {
   const pickupAddress = document.getElementById('pickup').value;
@@ -2094,20 +2094,29 @@ async function calculateActualDistanceAndPrice() {
     throw new Error("Could not calculate route distance");
   }
 
-  // Convert to miles
-  const miles = (distanceMeters / 1609.34);
+  // Convert meters to miles (Client's formula)
+  const miles = distanceMeters * 0.000621371;
   console.log(`📍 Raw distance: ${distanceMeters} meters = ${miles.toFixed(2)} miles`);
 
-  // Calculate price based on carrier type and condition
-  const carrierType = document.querySelector('input[name="carrier-type"]:checked')?.value || 'open';
-  const vehicleCondition = document.querySelector('input[name="running"]:checked')?.value || 'yes';
-  
-  // ✅ PERCENTAGE FORMULA: Open = miles × 45%, Enclosed = miles × 55%
-  let baseRatePercentage = carrierType.toLowerCase() === 'enclosed' ? 0.55 : 0.45;
+  // Get selected carrier + condition (Client's clear code)
+  const carrierType = (document.querySelector('input[name="carrier-type"]:checked')?.value || "open").toLowerCase();
+  const vehicleCondition = (document.querySelector('input[name="running"]:checked')?.value || "yes").toLowerCase();
+
+  // Correct percentage mapping (Client's clear if-else)
+  let baseRatePercentage;
+  if (carrierType === "open") {
+    baseRatePercentage = 0.45;
+  } else if (carrierType === "enclosed") {
+    baseRatePercentage = 0.55;
+  } else {
+    baseRatePercentage = 0.45; // fallback to open
+  }
+
+  // Base price
   let price = miles * baseRatePercentage;
-  
-  // ✅ Add $50 for inoperable vehicle
-  if (vehicleCondition !== 'yes') {
+
+  // Add $50 if not running
+  if (vehicleCondition !== "yes") {
     price += 50;
   }
 
