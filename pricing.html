@@ -40,7 +40,7 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    flex: 0 0 25%; /* smaller width (35%) */
+    flex: 0 0 25%;
     margin-left: 10%;
   }
 
@@ -59,7 +59,7 @@
   }
 
   .price-option h3 {
-    color: -#581eff;
+    color: #581eff;
     margin-bottom: 10px;
     font-size: 20px;
   }
@@ -79,49 +79,48 @@
   }
 
   .book-online-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-top: 15px;
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 15px;
+  }
 
-.book-btn {
-  display: inline-block;
-  background-color: transparent;
-  color: #000;
-  font-weight: 600;
-  padding: 12px 24px;
-  border-radius: 8px;
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  border: 2px solid #581eff;
-}
+  .book-btn {
+    display: inline-block;
+    background-color: transparent;
+    color: #000;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: 2px solid #581eff;
+  }
 
-.book-btn:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-  color: #fff;
-}
+  .book-btn:hover {
+    background-color: #581eff;
+    transform: translateY(-2px);
+    color: #fff;
+  }
 
-.book-phone {
-  margin-top: 8px;
-  color: #333;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-}
+  .book-phone {
+    margin-top: 8px;
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+  }
 
-.book-phone:hover {
-  color: #007bff;
-  text-decoration: underline;
-}
-
+  .book-phone:hover {
+    color: #007bff;
+    text-decoration: underline;
+  }
 
   /* ---------- RIGHT SIDE: SUMMARY ---------- */
   .summary-section {
-    flex: 1 1 60%; /* larger width for summary card */
+    flex: 1 1 60%;
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.1);
@@ -183,7 +182,6 @@
     color: #581eff;
   }
 
-  /* ---------- BUTTON ---------- */
   .btn {
     display: inline-block;
     background: #581eff;
@@ -214,56 +212,64 @@
     background: #0b5ed7;
   }
 
-  /* ---------- RESPONSIVE LAYOUT FIX ---------- */
-@media (max-width: 1200px) {
-  .main-layout {
-    flex-direction: column;
-    align-items: center;
-    margin: 30px auto;
-    gap: 30px;
+  /* ---------- RESPONSIVE FIX ---------- */
+  @media (max-width: 1200px) {
+    .main-layout {
+      flex-direction: column;
+      align-items: center;
+      margin: 30px auto;
+      gap: 30px;
+    }
+
+    /* ✅ Two boxes side by side (center aligned) */
+    .price-options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .price-option {
+      flex: 0 0 45%;
+      width: 45%;
+    }
+
+    /* ✅ Summary below */
+    .summary-section {
+      width: 90%;
+      margin: 20px auto 40px;
+    }
   }
 
-  /* ✅ Two boxes side by side (center aligned) */
-  .price-options {
-    display: flex;
-    justify-content: center; /* center align horizontally */
-    align-items: stretch;
-    gap: 30px; /* space between the boxes */
-    width: 80%; /* adjust container width */
-    margin: 0 auto;
-  }
+  /* ---------- MOBILE ---------- */
+  @media (max-width: 700px) {
+    .price-options {
+      flex-direction: column;
+      align-items: center;
+      width: 75%;
+      gap: 20px;
+    }
 
-  .price-option {
-    flex: 0 0 45%; /* each box takes 45% width */
-    width: 45%;
-  }
+    .price-option {
+      width: 100%;
+    }
 
-  /* ✅ Summary goes below the two boxes */
-  .summary-section {
-    width: 80%;
-    margin: 20px auto 40px;
-  }
-}
+    .summary-section {
+      width: 75%;
+      margin: 0 auto;
+      margin-right: -8px !important;
+    }
 
-/* ---------- MOBILE ---------- */
-@media (max-width: 700px) {
-  .price-options {
-    flex-direction: column; /* stack on mobile */
-    align-items: center;
-    width: 90%;
-    gap: 20px;
+    header {
+      font-size: 22px;
+      padding: 15px 0;
+      margin-right: -42px;
+    }
   }
-
-  .price-option {
-    width: 100%;
-  }
-
-  .summary-section {
-    width: 95%;
-  }
-}
-
 </style>
+
 </head>
 <body>
 
@@ -343,7 +349,7 @@
   </div>
 </div>
 
-<button class="btn back-btn" onclick="goBack()">← Go Back</button>
+<!-- <button class="btn back-btn" onclick="goBack()">← Go Back</button> -->
 
 <script>
 // ======= DYNAMIC PRICE CALCULATION (CLIENT'S CLEAR VERSION) =======
