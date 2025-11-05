@@ -248,14 +248,29 @@
         order: document.getElementById("order").value,
       };
 
-      emailjs.send("service_7lqjfma", "template_z6v0dn9", templateParams)
-      .then(() => {
-        alert("✅ Your tracking request has been sent successfully!");
-        document.getElementById("trackForm").reset();
-        grecaptcha.reset();
-      })
-      .catch(err => alert("❌ Error sending request: " + err));
-    });
+      // Step 1: Send email to admin
+emailjs.send("service_7lqjfma", "template_z6v0dn9", templateParams)
+  .then(() => {
+    console.log("✅ Email sent to admin successfully!");
+
+    // Step 2: Send same email to user
+    const userEmail = document.getElementById("email").value;
+    const userParams = {
+      email: userEmail,
+      order: document.getElementById("order").value,
+      to_email: userEmail // ensures it sends to the user's own address
+    };
+
+    return emailjs.send("service_7lqjfma", "template_z6v0dn9", userParams);
+  })
+  .then(() => {
+    alert("✅ Your tracking request has been sent successfully!");
+    document.getElementById("trackForm").reset();
+    grecaptcha.reset();
+  })
+  .catch(err => alert("❌ Error sending request: " + err));
+});
+
 
 // Invisible reCAPTCHA callback
   function onSubmit(token) {
