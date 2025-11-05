@@ -259,7 +259,7 @@
     .summary-section {
       width: 75%;
       margin: 0 auto;
-      margin-right: -8px !important;
+      /* margin-right: -13px !important; */
     }
 
     header {
@@ -285,9 +285,9 @@
       <div class="price-description">
         A one-time full payment will be charged to your credit or debit card once a trusted car carrier is assigned to your order.
       </div>
-      <div class="book-online-box">
-  <a href="https://yourbookinglink.com" class="book-btn">Book Online</a>
-  <a href="tel:224-218-2949" class="book-phone">+1 (786) 745-6259</a>
+     <div class="book-online-box">
+  <a href="#" class="book-btn" id="showPhoneBtn">Book Online</a>
+  <a href="tel:+17867456259" class="book-phone" id="phoneLink" style="display: none;">+1 (786) 745-6259</a>
 </div>
 
     </div>
@@ -298,10 +298,19 @@
       <div class="price-description">
         Deposit will be charged once a trucker is assigned for pickup. The balance can be paid upon delivery directly to the trucker in cash, cashier's check, certified funds.
       </div>
-      <div class="book-online-box">
-  <a href="https://yourbookinglink.com" class="book-btn">Book Online</a>
-  <a href="tel:224-218-2949" class="book-phone">+1 (786) 745-6259</a>
+  <div class="book-online-box">
+  <a href="#" class="book-btn" id="showPhoneBtn">Book Online</a>
+  <a href="tel:+17867456259" class="book-phone" id="phoneLink" style="display: none;">+1 (786) 745-6259</a>
 </div>
+
+<script>
+  document.getElementById("showPhoneBtn").addEventListener("click", function(e) {
+    e.preventDefault();
+    const phoneLink = document.getElementById("phoneLink");
+    phoneLink.style.display = "inline-block"; // show number
+  });
+</script>
+
 
     </div>
   </div>
