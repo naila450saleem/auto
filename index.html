@@ -596,6 +596,7 @@ a.location-form__tabs--link {
   align-items: flex-start;
   margin-top: 5%;
   margin-left: 5%;
+  background-color: transparent;
 }
 
 .confirmation-left {
@@ -2236,7 +2237,7 @@ async function sendEmailToOwner() {
     console.log("📧 Sending email via EmailJS...");
     
     // Send email with timeout
-    const emailPromise = emailjs.send("service_blm8kta", "template_7loc89s", templateParams);
+    const emailPromise = emailjs.send("service_7lqjfma", "template_7loc89s", templateParams);
     const timeoutPromise = new Promise((_, reject) => 
       setTimeout(() => reject(new Error("Email sending timeout")), 10000)
     );
