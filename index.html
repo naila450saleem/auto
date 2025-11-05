@@ -2046,7 +2046,8 @@ if (continueBtn) {
       
       // ✅ Save to localStorage
       localStorage.setItem('tripMiles', miles.toFixed(2));
-      localStorage.setItem('calculatedPrice', `$${price.toFixed(2)}`);
+      // ✅ CORRECT - Just the number without any dollar sign
+localStorage.setItem('calculatedPrice', price.toFixed(2));
 
       
       console.log(`✅ Step 1 Complete: ${miles.toFixed(2)} miles = $${price.toFixed(2)}`);
