@@ -2233,7 +2233,8 @@ async function sendEmailToOwner() {
       pickup_date, delivery_date,
       route, carrier_type, status,
       price, email, phone, name,
-      miles: `${miles} miles`
+      miles: `${miles} miles`,
+      estimate_price: price
     };
 
     console.log("📧 Sending email via EmailJS...");
