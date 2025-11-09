@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | Expedite Auto Transportation</title>
+    <style>
+        :root {
+            --primary-color: #1a5276;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Main Content */
+        .content-wrapper {
+            display: flex;
+            margin: 40px 0;
+            gap: 30px;
+        }
+        
+        .terms-content {
+            flex: 3;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar {
+            flex: 1;
+        }
+        
+        .quick-links {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 100px;
+        }
+        
+        .quick-links h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--light-bg);
+            padding-bottom: 10px;
+        }
+        
+        .quick-links ul {
+            list-style: none;
+        }
+        
+        .quick-links ul li {
+            margin-bottom: 10px;
+        }
+        
+        .quick-links ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--light-bg);
+        }
+        
+        .quick-links ul li a:hover {
+            color: var(--secondary-color);
+            padding-left: 5px;
+        }
+        
+        /* Terms Sections */
+        .terms-section {
+            margin-bottom: 40px;
+        }
+        
+        .terms-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-bg);
+        }
+        
+        .terms-section h3 {
+            color: var(--secondary-color);
+            margin: 20px 0 10px;
+        }
+        
+        .terms-section p {
+            margin-bottom: 15px;
+        }
+        
+        .terms-section ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .terms-section ul li {
+            margin-bottom: 8px;
+        }
+        
+        .highlight-box {
+            background-color: var(--light-bg);
+            color: blue;
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 10px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .terms-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Expedite <span>Auto</span> Transportation</a>
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Terms & Conditions</h1>
+            <p>Last Updated: November 2025</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="content-wrapper">
+            <!-- Terms Content -->
+            <main class="terms-content">
+                <div class="intro">
+                    <p>Welcome to Expedite Auto Transportation. By accessing or using our website and services, you agree to comply with these Terms & Conditions. Please read them carefully before booking or using our services.</p>
+                </div>
+
+                <section class="terms-section" id="service-overview">
+                    <h2>1. Service Overview</h2>
+                    <p>Expedite Auto Transportation provides vehicle shipping and transportation services across the United States. By submitting a quote request or booking a shipment, you authorize us to arrange transportation through our network of licensed and insured carriers.</p>
+                </section>
+
+                <section class="terms-section" id="quotes-pricing">
+                    <h2>2. Quotes and Pricing</h2>
+                    <ul>
+                        <li>All quotes provided are based on the information you submit (vehicle type, pickup/delivery locations, and service type).</li>
+                        <li>Final pricing may vary depending on fuel rates, carrier availability, or last-minute changes.</li>
+                        <li>Quotes are valid for a limited time unless otherwise stated.</li>
+                    </ul>
+                </section>
+
+                <section class="terms-section" id="booking-payment">
+                    <h2>3. Booking and Payment</h2>
+                    <ul>
+                        <li>A booking or deposit confirms your agreement to proceed with transportation services.</li>
+                        <li>Remaining balances are due upon delivery unless otherwise specified.</li>
+                        <li>Accepted payment methods include credit/debit cards, bank transfers, or approved alternatives.</li>
+                        <li>Failure to make payment may result in cancellation or additional fees.</li>
+                    </ul>
+                </section>
+
+                <section class="terms-section" id="cancellation-policy">
+                    <h2>4. Cancellation Policy</h2>
+                    <ul>
+                        <li>Cancellations made before dispatch may be subject to a processing fee.</li>
+                        <li>Once a carrier is assigned and dispatched, deposits become non-refundable.</li>
+                        <li>Refunds (if applicable) are processed within 5–10 business days.</li>
+                    </ul>
+                </section>
+
+                <section class="terms-section" id="vehicle-preparation">
+                    <h2>5. Vehicle Preparation</h2>
+                    <p>Customers are responsible for:</p>
+                    <ul>
+                        <li>Ensuring the vehicle is in operable condition (unless booked as "inoperable").</li>
+                        <li>Removing personal items and valuables from the vehicle.</li>
+                        <li>Notifying the company of any modifications (lift kits, lowered suspensions, etc.).</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <p>We are not liable for damage to or loss of personal items left in the vehicle.</p>
+                    </div>
+                </section>
+
+                <section class="terms-section" id="pickup-delivery">
+                    <h2>6. Pickup and Delivery</h2>
+                    <ul>
+                        <li>Pickup and delivery dates are estimates; weather, traffic, or carrier delays may affect schedules.</li>
+                        <li>Customers must be available or assign a representative at both pickup and delivery points.</li>
+                        <li>If the location is inaccessible to large trucks, alternative nearby meeting points may be arranged.</li>
+                    </ul>
+                </section>
+
+                <section class="terms-section" id="damage-claims">
+                    <h2>7. Damage and Claims</h2>
+                    <ul>
+                        <li>All vehicles are inspected before loading and upon delivery.</li>
+                        <li>Any visible damage must be noted on the Bill of Lading before signing.</li>
+                        <li>Claims must be filed directly with the carrier's insurance company within the allowed timeframe.</li>
+                        <li>Expedite Auto Transportation assists with claim coordination but is not responsible for carrier-related damages.</li>
+                    </ul>
+                </section>
+
+                <section class="terms-section" id="sms-communications">
+                    <h2>8. SMS and Communications</h2>
+                    <ul>
+                        <li>By providing your phone number, you consent to receive calls or SMS messages related to quotes, updates, and promotions.</li>
+                        <li>Message frequency may vary; standard rates apply.</li>
+                        <li>Reply "STOP" to opt out or "HELP" for assistance.</li>
+                    </ul>
+                </section>
+
+                <section class="terms-section" id="limitation-liability">
+                    <h2>9. Limitation of Liability</h2>
+                    <p>We act solely as a broker connecting customers with authorized carriers.</p>
+                    <p>Expedite Auto Transportation is not liable for:</p>
+                    <ul>
+                        <li>Delivery delays, weather issues, or carrier-related incidents.</li>
+                        <li>Loss of personal items or indirect damages.</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <p>Our total liability shall not exceed the amount paid for the service.</p>
+                    </div>
+                </section>
+
+                <section class="terms-section" id="website-use">
+                    <h2>10. Website Use</h2>
+                    <p>You agree not to misuse our website by:</p>
+                    <ul>
+                        <li>Uploading harmful or fraudulent content.</li>
+                        <li>Attempting unauthorized access or interfering with website operations.</li>
+                    </ul>
+                    <p>Violation of these terms may result in restricted access or legal action.</p>
+                </section>
+
+                <section class="terms-section" id="privacy-policy">
+                    <h2>11. Privacy Policy</h2>
+                    <p>Use of our website is also governed by our Privacy Policy, which outlines how we collect and protect your information.</p>
+                </section>
+
+                <section class="terms-section" id="governing-law">
+                    <h2>12. Governing Law</h2>
+                    <p>These Terms are governed by the laws of the United States and the state where the service is provided. Any disputes shall be resolved in accordance with applicable state and federal laws.</p>
+                </section>
+
+                <section class="terms-section" id="contact-information">
+                    <h2>13. Contact Information</h2>
+                    <p>If you have questions or concerns about these Terms & Conditions, please contact:</p>
+                    <div class="highlight-box">
+                        <p>📧 Sales@expediteautotransportation.com</p>
+                        <p>🌐 www.expediteautotransportation.com</p>
+                    </div>
+                </section>
+            </main>
+
+          
+        </div>
+    </div>
+
+   
+</body>
+</html>
