@@ -277,8 +277,8 @@ a.location-form__tabs--link {
 }
 
 .btn-primary {
-     background: linear-gradient(135deg, #667eea 0%, #8a5fba 100%);
-    color: #000;
+     background: #581eff;
+    color: #fff;
     border: none;
     padding: 14px 30px;
     font-size: 1rem;
@@ -836,6 +836,7 @@ hr {
     width: 100%;
     outline: none;
     transition: all 0.3s ease;
+    margin-bottom: 10px;
 }
 
 /* 🔹 Focus state */
@@ -1346,7 +1347,7 @@ border: 2.5px solid #6e5bff;
 </div>
 
 <div class="continue-buttons" id="buttonContainer">
-  <input type="submit" id="route-confirm" class="btn" value="Continue to Contact">
+  <input type="submit" id="route-confirm" class="btn" value="Continue">
   <button type="button" id="dealer-btn" class="btn dealer-btn hidden">
     Continue in<span class="mobile-break"><br></span>Dealership Portal
   </button>
@@ -1380,6 +1381,11 @@ border: 2.5px solid #6e5bff;
       </div>
 
       <form id="quote-details-form">
+          <div class="form-field">
+    <input type="text" id="name" name="name" placeholder="Full Name" required>
+    <!-- ✅ "name" attribute bhi add kar dein -->
+</div>
+
   <div class="form-field">
     <input type="tel" id="phone" name="phone" placeholder="Phone" required>
   </div>
@@ -1387,6 +1393,8 @@ border: 2.5px solid #6e5bff;
   <div class="form-field">
    <input type="email" id="email" name="email" placeholder="Email" required>
   </div>
+
+
 
   <div class="checkbox-group">
     <label class="checkbox-item">
@@ -1483,6 +1491,8 @@ const stateShortNames = {
   "Tennessee": "TN","Texas": "TX","Utah": "UT","Vermont": "VT","Virginia": "VA","Washington": "WA",
   "West Virginia": "WV","Wisconsin": "WI","Wyoming": "WY"
 };
+
+
 
 // ==========================
 // DEBOUNCE FUNCTION
@@ -1655,9 +1665,19 @@ function saveFormData() {
 }
 
 // ==========================
+// GLOBAL VARIABLES
+// ==========================
+let dealerBtnGlobal = null;
+let phonePopupGlobal = null;
+
+// ==========================
 // DOCUMENT READY
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
+  // ---------- GLOBAL VARIABLES INITIALIZE ----------
+  dealerBtnGlobal = document.getElementById('dealer-btn');
+  phonePopupGlobal = document.getElementById('phonePopup');
+
 
   // ---------- SETUP AUTOCOMPLETE ----------
   setupNominatim('pickup', 'pickup-list', 'pickup-zip');
@@ -1778,9 +1798,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+if (dealerBtnGlobal) {
+    dealerBtnGlobal.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (phonePopupGlobal) {
+            phonePopupGlobal.style.display = 'flex';
+        }
+    });
+}
+
+
   document.querySelectorAll('.close-popup').forEach(closeBtn => {
     closeBtn.addEventListener('click', () => phonePopup.style.display = 'none');
   });
+
+  
 
   if (phonePopup) {
     phonePopup.addEventListener('click', e => { if (e.target === phonePopup) phonePopup.style.display = 'none'; });
